@@ -12,11 +12,9 @@
       yum: name=nginx state=latest
       sudo: yes
 
-#    - name: reconfigure nginx service to listen on other port
-#      lineinfile: dest=/etc/nginx/conf.d/default.conf regexp="^    listen " insertafter="    #listen " line="    listen       8080;"
-#      sudo: yes
     - name: Copy nginx configuration using other port
       template: src=template/default.conf dest=/etc/nginx/conf.d/default.conf
+      sudo: yes
       #notify: restart nginx
 
     - name: start and enable nginx service
