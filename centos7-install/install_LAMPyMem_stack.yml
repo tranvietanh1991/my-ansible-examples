@@ -13,6 +13,7 @@
 
     - name: start and enable mariadb service
       service: name=mariadb state=started enabled=yes
+      sudo: yes
 
     - name: install python driver using pip
       pip: name=mysql-python
@@ -31,6 +32,7 @@
 
     - name: start and enable httpd service
       service: name=httpd state=started enabled=yes
+      sudo: yes
 
     #### memcached server
 #    sudo yum install -y memcached
@@ -46,6 +48,7 @@
 
     - name: start and enable memcached service
       service: name=memcached state=started enabled=yes
+      sudo: yes
 
     - name: install python driver using pip
       pip: name=python-memcached
@@ -63,6 +66,7 @@
 
     - name: start and enable firewalld service
       service: name=firewalld state=started enabled=yes
+      sudo: yes
 
 #    sudo firewall-cmd --permanent --zone=public --add-service=http
 #    sudo firewall-cmd --permanent --zone=public --add-service=https
@@ -70,7 +74,10 @@
 
     - name: open port for http
       firewalld: zone=public service=http permanent=true state=enabled
+      sudo: yes
     - name: open port for https
       firewalld: zone=public service=https permanent=true state=enabled
+      sudo: yes
     - name: open port 8080/tcp
       firewalld: zone=public port=8080/tcp permanent=true state=enabled
+      sudo: yes
