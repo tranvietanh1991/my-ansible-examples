@@ -1,0 +1,78 @@
+---
+
+- hosts: all
+  serial: 3 #3 nodes at a time
+
+  tasks:
+    - name: install mariadb
+      yum: name={{ item }} state=latest
+      sudo: yes
+      with_items:
+        - mariadb-server
+        - mariadb-client
+        - mariadb-devel
+
+    - name: start and enable mariadb service
+      service: name=mariadb state=started enabled=yes
+
+    - name: install python driver using pip
+      pip: name=mysql-python
+      sudo: yes
+
+#    sudo yum -y install httpd mod_wsgi
+    #start service
+#    sudo systemctl start httpd.service
+#    sudo systemctl enable httpd.service
+
+    - name: install httpd and mod_wsgi
+      yum: name={{ item }} state=latest
+      sudo: yes
+      with_items:
+        - httpd
+        - mod_wsgi
+
+    - name: start and enable httpd service
+      service: name=httpd state=started enabled=yes
+
+    #### memcached server
+#    sudo yum install -y memcached
+#    sudo systemctl start memcached
+#    sudo systemctl enable memcached
+#    sudo systemctl status memcached
+#
+#    sudo pip install python-memcached
+
+    - name: install memcached
+      yum: name=memcached state=latest
+      sudo: yes
+
+    - name: start and enable memcached service
+      service: name=memcached state=started enabled=yes
+
+    - name: install python driver using pip
+      pip: name=python-memcached
+      sudo: yes
+
+    ####### Setup firewalld and Open Port for centos 7 (using firewall-cmd instead of iptable)
+#    sudo yum install -y firewalld
+#    sudo systemctl start firewalld
+#    sudo systemctl enable firewalld
+#    sudo systemctl status firewalld
+
+    - name: install firewalld
+      yum: name=firewalld state=latest
+      sudo: yes
+
+    - name: start and enable firewalld service
+      service: name=firewalld state=started enabled=yes
+
+#    sudo firewall-cmd --permanent --zone=public --add-service=http
+#    sudo firewall-cmd --permanent --zone=public --add-service=https
+#    sudo firewall-cmd --reload
+
+    - name: open port for http
+      firewalld: zone=public service=http permanent=true state=enabled
+    - name: open port for https
+      firewalld: zone=public service=https permanent=true state=enabled
+    - name: open port 8080/tcp
+      firewalld: zone=public port=8080/tcp permanent=true state=enabled

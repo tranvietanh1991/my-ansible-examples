@@ -30,19 +30,19 @@
 
 
     - name: download easy_install source code
-      command: wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
+      command: wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-15.2.tar.gz
       args:
         chdir: ~
-        creates: ~/setuptools-1.4.2.tar.gz
+        creates: ~/setuptools-15.2.tar.gz
 
     - name: unrar easy_install source code
-      command: tar -xvf setuptools-1.4.2.tar.gz
+      command: tar -xvf setuptools-15.2.tar.gz
       args:
         chdir: ~
-        creates: ~/setuptools-1.4.2/setup.py
+        creates: ~/setuptools-15.2/setup.py
 
     - name: install easy_install from source code
-      command: sudo python setuptools-1.4.2/setup.py install
+      command: sudo python setuptools-15.2/setup.py install
       args:
         chdir: ~
         creates: /usr/bin/easy_install
