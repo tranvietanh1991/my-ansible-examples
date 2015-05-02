@@ -28,7 +28,32 @@
         - screen
         - epel-release
 
-    - name: install pip
-      yum: name=python-pip state=latest
-#      sudo_user: root
-      sudo: yes
+
+    - name: download easy_install source code
+      command: wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
+      args:
+        chdir: ~
+        creates: ~/setuptools-1.4.2.tar.gz
+
+    - name: unrar easy_install source code
+      command: tar -xvf setuptools-1.4.2.tar.gz
+      args:
+        chdir: ~
+        creates: ~/setuptools-1.4.2/setup.py
+
+    - name: install easy_install from source code
+      command: sudo python setuptools-1.4.2/setup.py install
+      args:
+        chdir: ~
+        creates: /usr/bin/easy_install
+
+    - name: install pip using easy_install
+      command: sudo easy_install pip
+      args:
+        creates: /usr/bin/pip
+
+    - name: upgrade pip
+      command: sudo pip install --upgrade pip
+
+    - name: install virtualenv using pip
+      pip: name=virtualenv
