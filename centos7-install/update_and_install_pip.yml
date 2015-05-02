@@ -57,3 +57,4 @@
 
     - name: install virtualenv using pip
       pip: name=virtualenv
+      sudo: yes
