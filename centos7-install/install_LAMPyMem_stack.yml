@@ -1,5 +1,5 @@
 ---
-
+#Install LAMP stack for python
 - hosts: all
   serial: 3 #3 nodes at a time
 
@@ -20,7 +20,6 @@
       sudo: yes
 
 #    sudo yum -y install httpd mod_wsgi
-    #start service
 #    sudo systemctl start httpd.service
 #    sudo systemctl enable httpd.service
 
