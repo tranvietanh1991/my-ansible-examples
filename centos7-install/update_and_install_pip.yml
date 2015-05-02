@@ -55,11 +55,11 @@
       command: sudo easy_install pip
       args:
         creates: /usr/bin/pip
-      register: result_install_pip
 
     - name: upgrade pip
       command: sudo pip install --upgrade pip
-      when: result_install_pip|success
+      args:
+        creates: /usr/bin/virtualenv
 
     - name: install virtualenv using pip
       pip: name=virtualenv
