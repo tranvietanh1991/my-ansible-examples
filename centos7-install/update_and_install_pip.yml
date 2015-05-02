@@ -15,7 +15,7 @@
 
     - name: install proper lib and tool
 #    command: sudo yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel yum-utils wget vim python-devel screen
-      yum: name={{ item }} state=lastest
+      yum: name={{ item }} state=latest
       with_items:
         - zlib-dev
         - openssl-devel
