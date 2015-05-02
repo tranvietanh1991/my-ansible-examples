@@ -1,0 +1,20 @@
+---
+
+- name: install httpd and mod_wsgi
+  yum: name={{ item }} state=latest
+  sudo: yes
+  with_items:
+    - httpd
+    - mod_wsgi
+
+- name: copy httpd configuration using other port
+  template: src=templates/apache/httpd.conf dest=/etc/httpd/conf/httpd.conf
+  sudo: yes
+
+- name: start and enable httpd service
+  service: name=httpd state=started enabled=yes
+  sudo: yes
+
+- name: open listen port/tcp
+  firewalld: zone=public port={{ httpd_port }}/tcp permanent=true state=enabled immediate=true
+  sudo: yes

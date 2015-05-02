@@ -1,12 +1,13 @@
 ---
 
-- name: install LAMP stack for python
+- name: install 4 Database, MariaDB + MongoDB + Redis + Memcached
   hosts: all
   serial: 3 #concurent processing nodes
 
   tasks:
-    - include: tasks/install_apache_and_mod_wsgi.yml httpd_port=80
     - include: tasks/install_mariadb_and_python_driver.yml
+    - include: tasks/install_mongodb_and_python_driver.yml
+    - include: tasks/install_redis_and_python_driver.yml
     - include: tasks/install_memcached_and_python_driver.yml
 
 - include: update_and_install_pip.yml

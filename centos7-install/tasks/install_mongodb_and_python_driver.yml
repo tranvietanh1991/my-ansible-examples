@@ -1,0 +1,20 @@
+---
+
+- name: add mongodb repo
+  copy: src=files/mongodb.repo dest=/etc/yum.files.d/mongodb.repo owner=root group=root mode=0644
+  sudo: yes
+
+- name: install mongodb
+  yum: name={{ item }} state=latest
+  sudo: yes
+  with_items:
+    - mongo-10gen
+    - mongo-10gen-server
+
+- name: start and enable mongod service
+  service: name=mongod state=started enabled=yes
+  sudo: yes
+
+- name: install mongodb python driver using pip
+  pip: name=pymongo
+  sudo: yes

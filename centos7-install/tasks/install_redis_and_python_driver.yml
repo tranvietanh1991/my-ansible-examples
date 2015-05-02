@@ -1,0 +1,13 @@
+---
+
+- name: install redis
+  yum: name=redis state=latest
+  sudo: yes
+
+- name: start and enable redis service
+  service: name=redis state=started enabled=yes
+  sudo: yes
+
+- name: install redis python driver using pip
+  pip: name=redis
+  sudo: yes

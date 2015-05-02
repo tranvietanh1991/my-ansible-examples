@@ -1,0 +1,16 @@
+---
+
+- name: install mariadb
+  yum: name={{ item }} state=latest
+  sudo: yes
+  with_items:
+    - mariadb-server
+    - mariadb-devel
+
+- name: start and enable mariadb service
+  service: name=mariadb state=started enabled=yes
+  sudo: yes
+
+- name: install python driver using pip
+  pip: name=mysql-python
+  sudo: yes
