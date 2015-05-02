@@ -1,11 +1,14 @@
 ---
 
-- hosts: all
-  serial: 5 #5 nodes at a time
+- name: update yum packages and install pip
+  hosts: all
+  serial: 5 #concurent processing nodes
 
   tasks:
     - name: install dev lib
       command: sudo yum groupinstall -y development
+      args:
+        creates: /usr/bin/vim
 
     - name: upgrade all packages
       yum: name=* state=latest
@@ -14,7 +17,6 @@
 
     - name: install proper lib and tool
       yum: name={{ item }} state=latest
-#      sudo_user: root
       sudo: yes
       with_items:
         - zlib-devel
@@ -53,9 +55,11 @@
       command: sudo easy_install pip
       args:
         creates: /usr/bin/pip
+      register: result_install_pip
 
     - name: upgrade pip
       command: sudo pip install --upgrade pip
+      when: result_install_pip|success
 
     - name: install virtualenv using pip
       pip: name=virtualenv
