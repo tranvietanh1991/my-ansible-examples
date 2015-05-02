@@ -16,7 +16,7 @@
       sudo: yes
 
     - name: install proper lib and tool
-      yum: name={{ item }} state=latest
+      yum: name={{ item }}
       sudo: yes
       with_items:
         - zlib-devel
