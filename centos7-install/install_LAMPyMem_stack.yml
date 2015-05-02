@@ -9,7 +9,6 @@
       sudo: yes
       with_items:
         - mariadb-server
-        - mariadb-client
         - mariadb-devel
 
     - name: start and enable mariadb service
