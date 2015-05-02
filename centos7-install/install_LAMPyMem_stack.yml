@@ -38,7 +38,7 @@
       service: name=memcached state=started enabled=yes
       sudo: yes
 
-    - name: install python driver using pip
+    - name: install memcached python driver using pip
       pip: name=python-memcached
       sudo: yes
 

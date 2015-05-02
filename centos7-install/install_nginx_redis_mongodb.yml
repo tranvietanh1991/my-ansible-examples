@@ -1,0 +1,50 @@
+---
+#Install Nginx + MongoDB + Redis
+- hosts: all
+  serial: 3 #3 nodes at a time
+
+  tasks:
+    - name: add nginx repo
+      copy: src=repos/nginx.repo dest=/etc/yum.repos.d/mongodb.repo owner=root group=root mode=0644
+      sudo: yes
+
+    - name: install nginx
+      yum: name=nginx state=latest
+      sudo: yes
+
+    - name: reconfigure nginx service to listen on other port
+      lineinfile: dest=/etc/nginx/nginx.conf regexp="^\s*listen " insertafter="#listen " line="listen 8080;"
+      sudo: yes
+
+    - name: start and enable nginx service
+      service: name=nginx state=started enabled=yes
+      sudo: yes
+
+
+    - name: add mongodb repo
+      copy: src=repos/mongodb.repo dest=/etc/yum.repos.d/mongodb.repo owner=root group=root mode=0644
+      sudo: yes
+
+    - name: install mongodb
+      yum: name={{ item }} state=latest
+      sudo: yes
+      with_items:
+        - mongo-10gen
+        - mongo-10gen-server
+
+    - name: start and enable mongod service
+      service: name=mongod state=started enabled=yes
+      sudo: yes
+
+
+    - name: install redis
+      yum: name=redis state=latest
+      sudo: yes
+
+    - name: start and enable redis service
+      service: name=redis state=started enabled=yes
+      sudo: yes
+
+    - name: install redis python driver using pip
+      pip: name=redis
+      sudo: yes
