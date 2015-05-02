@@ -28,6 +28,7 @@
         - screen
         - epel-release
         - firewalld
+        - lsof
 
 
     - name: download easy_install source code
