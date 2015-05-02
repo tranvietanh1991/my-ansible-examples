@@ -1,0 +1,13 @@
+#Update
+---
+
+- hosts: all
+  serial: 5 #5 nodes at a time
+
+  tasks:
+  - name: update packages
+    command: sudo yum -y update
+  - name: install dev lib
+    command: sudo yum groupinstall -y development
+  - name: install proper lib and tool
+    command: sudo yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel yum-utils wget vim python-devel screen
