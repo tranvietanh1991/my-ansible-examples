@@ -27,6 +27,7 @@
         - python-devel
         - screen
         - epel-release
+        - firewalld
 
 
     - name: download easy_install source code
@@ -57,4 +58,8 @@
 
     - name: install virtualenv using pip
       pip: name=virtualenv
+      sudo: yes
+
+    - name: start and enable firewalld service
+      service: name=firewalld state=started enabled=yes
       sudo: yes

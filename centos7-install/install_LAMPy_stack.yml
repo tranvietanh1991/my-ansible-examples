@@ -30,18 +30,6 @@
       service: name=httpd state=started enabled=yes
       sudo: yes
 
-    - name: install memcached
-      yum: name=memcached state=latest
-      sudo: yes
-
-    - name: start and enable memcached service
-      service: name=memcached state=started enabled=yes
-      sudo: yes
-
-    - name: install memcached python driver using pip
-      pip: name=python-memcached
-      sudo: yes
-
     - name: install firewalld
       yum: name=firewalld state=latest
       sudo: yes
@@ -55,7 +43,4 @@
       sudo: yes
     - name: open port for https
       firewalld: zone=public service=https permanent=true state=enabled immediate=true
-      sudo: yes
-    - name: open port 8080/tcp
-      firewalld: zone=public port=8080/tcp permanent=true state=enabled immediate=true
       sudo: yes

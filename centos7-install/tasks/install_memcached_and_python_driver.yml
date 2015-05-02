@@ -1,0 +1,12 @@
+---
+- name: install memcached
+  yum: name=memcached state=latest
+  sudo: yes
+
+- name: start and enable memcached service
+  service: name=memcached state=started enabled=yes
+  sudo: yes
+
+- name: install memcached python driver using pip
+  pip: name=python-memcached
+  sudo: yes

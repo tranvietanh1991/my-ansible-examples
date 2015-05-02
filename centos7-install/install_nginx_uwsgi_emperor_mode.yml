@@ -1,0 +1,55 @@
+---
+#Install Nginx + uwsgi emperor mode
+- hosts: all
+  serial: 3 #3 nodes at a time
+
+  tasks:
+    - include: tasks/install_nginx.yml nginx_port=8080
+
+    # Install UWSGI emperor mode
+
+    - name: install uwsgi using pip
+      pip: name=uwsgi
+      sudo: yes
+
+    - name: Copy uwsgi.service file to system service folder
+      template: src=templates/uwsgi/uwsgi.service dest=/etc/systemd/system/uwsgi.service
+      sudo: yes
+
+    - name: mkdir for uwsgi service
+      command: sudo mkdir /etc/uwsgi
+      args:
+        creates: /etc/uwsgi
+
+    - name: mkdir for emperor vassals
+      command: sudo mkdir /etc/uwsgi/vassals
+      args:
+        creates: /etc/uwsgi/vassals
+
+    - name: mkdir for uwsgi log
+      command: sudo mkdir /var/log/uwsgi
+      args:
+        creates: /var/log/uwsgi
+
+    - name: Copy uwsgi_emperor.ini file to uwsgi service folder
+      template: src=templates/uwsgi/uwsgi_emperor.ini dest=/etc/uwsgi/uwsgi_emperor.ini
+      sudo: yes
+
+    - name: start and enable uwsgi service
+      service: name=uwsgi state=started enabled=yes
+      sudo: yes
+
+    #copy file to system service folder
+#    sudo cp storagon/uwsgi.service /etc/systemd/system/uwsgi.service
+    #make dir
+#    sudo mkdir /etc/uwsgi
+#    sudo mkdir /etc/uwsgi/vassals
+    #copy emperor ini files
+
+#    sudo cp storagon/uwsgi_emperor.ini /etc/uwsgi/uwsgi_emperor.ini
+    #copy all worker ini files to vassals folder
+#    sudo cp storagon/uwsgi_Vagrant.ini /etc/uwsgi/vassals/uwsgi_Vagrant.ini
+
+    #start service
+#    sudo systemctl start uwsgi
+#    sudo systemctl enable uwsgi
