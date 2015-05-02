@@ -1,24 +1,20 @@
-#Update
 ---
 
 - hosts: all
   serial: 5 #5 nodes at a time
 
   tasks:
-#  - name: update packages
-#    command: sudo yum -y update
     - name: install dev lib
       command: sudo yum groupinstall -y development
 
     - name: upgrade all packages
       yum: name=* state=latest
-      sudo_user: root
+#      sudo_user: root
       sudo: yes
 
     - name: install proper lib and tool
-#    command: sudo yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel yum-utils wget vim python-devel screen
       yum: name={{ item }} state=latest
-      sudo_user: root
+#      sudo_user: root
       sudo: yes
       with_items:
         - zlib-devel
@@ -30,3 +26,9 @@
         - vim
         - python-devel
         - screen
+        - epel-release
+
+    - name: install pip
+      yum: name=python-pip state=latest
+#      sudo_user: root
+      sudo: yes
