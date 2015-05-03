@@ -18,6 +18,16 @@
       ignore_errors: yes
       #no_log: True
 
+    - name: feech repo
+      shell: echo {{bitbucket_password}} | sudo git fetch --all
+      args:
+        chdir: /var/www/storagon
+
+    - name: update repo
+      command: sudo git reset --hard origin/master
+      args:
+        chdir: /var/www/storagon
+
     - name: clear settings.pyc
       command: sudo rm -f storagon/settings.pyc
       args:
