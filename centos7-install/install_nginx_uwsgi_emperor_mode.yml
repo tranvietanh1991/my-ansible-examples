@@ -4,7 +4,10 @@
   hosts: all
   serial: 3 #concurent processing nodes
 
+  vars:
+    nginx_port: 8080
+
   tasks:
-    - include: tasks/install_nginx.yml nginx_port=8080
+    - include: tasks/install_nginx.yml #nginx_port=8080
 
     - include: tasks/install_uwsgi_emperor_mode.yml

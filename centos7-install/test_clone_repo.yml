@@ -2,6 +2,7 @@
 
 - include: install_LAMPy_stack.yml
 - include: install_4DB_mariadb_mongodb_redis_memcached.yml
+- include: install_nginx_uwsgi_emperor_mode.yml
 
 - name: test_clone_repo.yml
   hosts: all
