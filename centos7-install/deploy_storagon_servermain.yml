@@ -32,9 +32,6 @@
       args:
         creates: /var/www/storagon/log/{{ item}}
       with_items:
-        - httpd
-        - nginx
-        - uwsgi
         - celery
 
     - name: chmod log dir
