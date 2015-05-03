@@ -4,12 +4,12 @@
 - include: install_4DB_mariadb_mongodb_redis_memcached.yml
 - include: install_nginx_uwsgi_emperor_mode.yml
 
-- name: test_clone_repo.yml
+- name: deploy_storagon_servermain.yml
   hosts: all
   serial: 5 #concurent processing nodes
 
-#  vars:
-#    ch_dir: /var/www
+  vars:
+    run_server_immediately: True
 
   tasks:
     - name: clone repo
