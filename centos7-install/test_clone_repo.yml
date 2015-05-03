@@ -5,4 +5,4 @@
   serial: 5 #concurent processing nodes
 
   tasks:
-    - git: repo=https://tranvietanh1991@bitbucket.org/tranvietanh1991/storagon.git dest=~
+    - git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/vietcomfund.git dest=~
