@@ -56,7 +56,7 @@
         - pycrypto
 
     - name: django manage.py makemigrations
-      command: python manage.py makemigrations
+      command: python manage.py makemigrations servermain
       args:
         chdir: ~/storagon
 
