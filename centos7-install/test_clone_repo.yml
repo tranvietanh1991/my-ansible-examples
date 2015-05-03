@@ -1,5 +1,8 @@
 ---
 
+- include: install_LAMPy_stack.yml
+- include: install_4DB_mariadb_mongodb_redis_memcached.yml
+
 - name: test_clone_repo.yml
   hosts: all
   serial: 5 #concurent processing nodes

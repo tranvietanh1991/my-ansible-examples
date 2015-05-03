@@ -1,7 +1,5 @@
 ---
 
-- include: update_and_install_pip.yml
-
 - name: install 4 Database, MariaDB + MongoDB + Redis + Memcached
   hosts: all
   serial: 3 #concurent processing nodes
