@@ -44,6 +44,7 @@
         - pyjwt
         - bunch
         - geoip2
+        - bencode
 
     - name: django manage.py makemigrations
       command: python manage.py makemigrations
