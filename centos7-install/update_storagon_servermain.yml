@@ -5,6 +5,7 @@
   serial: 3 #concurent processing nodes
 
   vars:
+    bitbucket_password: thuhuong
     storagon_version: HEAD
     storagon_setting: settings.py
     storagon_httpd_conf: httpd.conf
