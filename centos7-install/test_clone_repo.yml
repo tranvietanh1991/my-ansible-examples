@@ -7,11 +7,12 @@
   tasks:
     - name: clone repo
       git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=~/storagon
-      no_log: True
+      #no_log: True
 
     - name: create database
-      mysql_db: login_user=root name=storagon encoding='UTF-8' state=present
+      mysql_db: name=storagon encoding='UTF-8' state=present
       sudo: yes
+      #login_user=root login_password=''
 
     - name: install django
       pip: name=django version=1.7
