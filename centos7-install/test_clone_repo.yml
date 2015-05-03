@@ -14,6 +14,11 @@
       sudo: yes
       #login_user=root login_password=''
 
+    - name: create log dir
+      command: mkdir ~/storagon/log
+      args:
+        creates: ~/storagon/log
+
     - name: install django
       pip: name=django version=1.7
       sudo: yes
