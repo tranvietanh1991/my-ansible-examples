@@ -1,7 +1,7 @@
 ---
 
 - name: add mongodb repo
-  copy: src=files/mongodb.repo dest=/etc/yum.files.d/mongodb.repo owner=root group=root mode=0644
+  copy: src=files/mongodb.repo dest=/etc/yum.repos.d/mongodb.repo owner=root group=root mode=0644
   sudo: yes
 
 - name: install mongodb
