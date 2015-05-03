@@ -10,7 +10,7 @@
       #no_log: True
 
     - name: create database
-      mysql_db: name=storagon encoding='UTF-8' state=present
+      mysql_db: name=storagon encoding=utf8 state=present
       sudo: yes
       #login_user=root login_password=''
 
