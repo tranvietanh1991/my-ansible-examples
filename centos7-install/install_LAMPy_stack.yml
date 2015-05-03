@@ -5,8 +5,11 @@
   hosts: all
   serial: 3 #concurent processing nodes
 
+  vars:
+    httpd_port: 80
+
   tasks:
-    - include: tasks/install_apache_and_mod_wsgi.yml httpd_port=80
+    - include: tasks/install_apache_and_mod_wsgi.yml #httpd_port=80
     - include: tasks/install_mariadb_and_python_driver.yml
     - include: tasks/install_memcached_and_python_driver.yml
 
