@@ -8,12 +8,12 @@
   hosts: all
   serial: 5 #concurent processing nodes
 
-  vars:
-    ch_dir: /var/www
+#  vars:
+#    ch_dir: /var/www
 
   tasks:
     - name: clone repo
-      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest={{ ch_dir }}/storagon
+      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon
       #no_log: True
 
     - name: create database
@@ -22,9 +22,9 @@
       #login_user=root login_password=''
 
     - name: create log dir
-      command: mkdir {{ ch_dir }}/storagon/log
+      command: mkdir /var/www/storagon/log
       args:
-        creates: "{{ ch_dir }}"/storagon/log
+        creates: /var/www/storagon/log
 
     - name: install django
       pip: name=django version=1.7
@@ -62,14 +62,14 @@
     - name: django manage.py makemigrations
       command: python manage.py makemigrations servermain
       args:
-        chdir: "{{ ch_dir }}"/storagon
+        chdir: /var/www/storagon
 
     - name: django manage.py migrate
       command: python manage.py migrate
       args:
-        chdir: "{{ ch_dir }}"/storagon
+        chdir: /var/www/storagon
 
     - name: django manage.py test
       command: python manage.py test
       args:
-        chdir: "{{ ch_dir }}"/storagon
+        chdir: /var/www/storagon
