@@ -5,4 +5,51 @@
   serial: 5 #concurent processing nodes
 
   tasks:
-    - git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/vietcomfund.git dest=~/vietcomfund
+    - name: clone repo
+      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=~/storagon
+      no_log: True
+
+    - name: create database
+      mysql_db: login_user=root name=storagon encoding='UTF-8' state=present
+      sudo: yes
+
+    - name: install django
+      pip: name=django version=1.7
+      sudo: yes
+
+    - name: install django-cache-machine from git
+      pip: name='git+https://github.com/jbalogh/django-cache-machine.git#egg=django-cache-machine'
+      sudo: yes
+
+    - name: install dependant lib
+      pip: name={{ item }}
+      sudo: yes
+      with_items:
+        - django-suit
+        - django-suit-redactor
+        - django-cors-headers
+        - mongoengine
+        - blinker
+        - celery
+        - django-celery
+        - flower
+        - pyyaml
+        - django-oauth-toolkit
+        - django-memcache-admin
+        - djangorestframework
+        - markdown
+        - django-filter
+        - djangorestframework-bulk
+        - pyjwt
+        - bunch
+        - geoip2
+
+    - name: django manage.py makemigrations
+      command: python manage.py makemigrations
+      args:
+        chdir: ~/storagon
+
+    - name: django manage.py migrate
+      command: python manage.py migrate
+      args:
+        chdir: ~/storagon
