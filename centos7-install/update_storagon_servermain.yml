@@ -7,6 +7,9 @@
   vars:
     storagon_version: HEAD
     storagon_setting: settings.py
+    storagon_httpd_conf: httpd.conf
+    storagon_nginx_conf: nginx.conf
+    storagon_uwsgi_conf: uwsgi_config.ini
 
   tasks:
     - name: clone repo
@@ -24,26 +27,37 @@
         chdir: /var/www/storagon
       when: storagon_setting != "settings.py"
 
+    #servermain
 
-#git fetch
-'sudo git fetch --all',
-'sudo git reset --hard origin/master',
-#change setting
-'sudo rm -f storagon/settings.pyc', #clear pyc
-'sudo cp -f storagon/settings_servermain_OVH.py storagon/settings.py', #change setting file
+    - name: overide httpd.conf
+      command: sudo cp -f storagon/{{ storagon_httpd_conf }} /etc/httpd/conf/httpd.conf
+      args:
+        chdir: /var/www/storagon
 
-#update servermain Apache mod_wsgi
-'sudo cp -f storagon/httpd_OVH.conf /etc/httpd/conf/httpd.conf',
-'sudo systemctl restart httpd.service',
+    - name: restart httpd service
+      service: name=httpd state=restarted
+      sudo: yes
 
-#update serverfile EngineX
-'sudo cp -f storagon/nginx_serverFile_OVH.conf /etc/nginx/nginx.conf',
-'sudo nginx -s reload',
+    - name: django manage.py collectstatic
+      command: sudo python manage.py collectstatic --noinput -c
+      args:
+        chdir: /var/www/storagon
 
-#update uwsgi
-'sudo cp storagon/uwsgi_emperor_OVH.ini /etc/uwsgi/uwsgi_emperor.ini',
-'sudo cp storagon/uwsgi_config_serverMain_OVH.ini /etc/uwsgi/vassals/uwsgi_config_serverMain_OVH.ini',
-'sudo systemctl restart uwsgi.service',
+    #serverfile
+    - name: overide nginx.conf
+      command: sudo cp -f storagon/{{ storagon_nginx_conf }} /etc/nginx/nginx.conf
+      args:
+        chdir: /var/www/storagon
 
-#clear and copy static files
-'python manage.py collectstatic --noinput -c',
+    - name: restart nginx service
+      service: name=nginx state=restarted
+      sudo: yes
+
+    - name: copy/overide uwsgi config to vassals folder
+      command: sudo cp -f storagon/{{ storagon_uwsgi_conf }} /etc/uwsgi/vassals/{{ storagon_uwsgi_conf }}
+      args:
+        chdir: /var/www/storagon
+
+    - name: restart uwsgi service
+      service: name=uwsgi state=restarted
+      sudo: yes
