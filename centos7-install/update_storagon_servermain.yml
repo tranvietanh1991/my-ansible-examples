@@ -16,7 +16,7 @@
       shell: echo {{bitbucket_password}} | sudo git fetch --all
       args:
         chdir: /var/www/storagon
-      #no_log: True
+      no_log: True
 
     - name: update repo
       command: sudo git reset --hard origin/master
@@ -38,6 +38,11 @@
       command: sudo mkdir /var/www/storagon/static
       args:
         creates: /var/www/storagon/static
+
+    - name: create media dir
+      command: sudo mkdir /var/www/storagon/media
+      args:
+        creates: /var/www/storagon/media
 
     #servermain
 
