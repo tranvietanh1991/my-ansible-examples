@@ -5,7 +5,6 @@
   serial: 3 #concurent processing nodes
 
   vars:
-    bitbucket_password: thuhuong
     storagon_version: HEAD
     storagon_setting: settings.py
     storagon_httpd_conf: httpd.conf
@@ -14,7 +13,7 @@
 
   tasks:
     - name: clone repo
-      git: repo=https://tranvietanh1991:thuhuong@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon version={{ storagon_version }}
+      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon
       sudo: yes
       #no_log: True
 
