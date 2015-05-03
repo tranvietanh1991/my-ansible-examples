@@ -1,0 +1,13 @@
+---
+
+- name: test_clone_repo.yml
+  hosts: all
+  serial: 5 #concurent processing nodes
+
+  vars_prompt:
+    - name: "bitbucket_password"
+      prompt: "Bitbucket account password?"
+      private: yes
+
+  tasks:
+    - git: repo=https://tranvietanh1991@bitbucket.org/tranvietanh1991/storagon.git dest=~
