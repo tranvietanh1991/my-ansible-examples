@@ -12,13 +12,7 @@
     storagon_uwsgi_conf: uwsgi_config.ini
 
   tasks:
-    - name: clone repo
-      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon
-      sudo: yes
-      ignore_errors: yes
-      #no_log: True
-
-    - name: feech repo
+    - name: fetch repo
       shell: echo {{bitbucket_password}} | sudo git fetch --all
       args:
         chdir: /var/www/storagon
