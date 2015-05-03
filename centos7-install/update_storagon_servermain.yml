@@ -15,6 +15,7 @@
     - name: clone repo
       git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon
       sudo: yes
+      ignore_errors: yes
       #no_log: True
 
     - name: clear settings.pyc
