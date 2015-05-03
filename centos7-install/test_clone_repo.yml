@@ -14,6 +14,7 @@
   tasks:
     - name: clone repo
       git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon
+      sudo: yes
       #no_log: True
 
     - name: create database
@@ -22,9 +23,19 @@
       #login_user=root login_password=''
 
     - name: create log dir
-      command: mkdir /var/www/storagon/log
+      command: sudo mkdir /var/www/storagon/log
       args:
         creates: /var/www/storagon/log
+
+    - name: create sub log dir
+      command: sudo mkdir /var/www/storagon/log/{{ item }}
+      args:
+        creates: /var/www/storagon/log/{{ item}}
+      with_items:
+        - httpd
+        - nginx
+        - uwsgi
+        - celery
 
     - name: install django
       pip: name=django version=1.7
