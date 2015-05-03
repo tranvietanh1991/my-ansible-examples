@@ -1,0 +1,49 @@
+---
+
+- name: update_storagon_servermain.yml
+  hosts: all
+  serial: 3 #concurent processing nodes
+
+  vars:
+    storagon_version: HEAD
+    storagon_setting: settings.py
+
+  tasks:
+    - name: clone repo
+      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon version={{ storagon_version }}
+      sudo: yes
+
+    - name: clear settings.pyc
+      command: sudo rm -f storagon/settings.pyc
+      args:
+        chdir: /var/www/storagon
+
+    - name: overide settings.py
+      command: sudo cp -f storagon/{{ storagon_setting }} storagon/settings.py
+      args:
+        chdir: /var/www/storagon
+      when: storagon_setting != "settings.py"
+
+
+#git fetch
+'sudo git fetch --all',
+'sudo git reset --hard origin/master',
+#change setting
+'sudo rm -f storagon/settings.pyc', #clear pyc
+'sudo cp -f storagon/settings_servermain_OVH.py storagon/settings.py', #change setting file
+
+#update servermain Apache mod_wsgi
+'sudo cp -f storagon/httpd_OVH.conf /etc/httpd/conf/httpd.conf',
+'sudo systemctl restart httpd.service',
+
+#update serverfile EngineX
+'sudo cp -f storagon/nginx_serverFile_OVH.conf /etc/nginx/nginx.conf',
+'sudo nginx -s reload',
+
+#update uwsgi
+'sudo cp storagon/uwsgi_emperor_OVH.ini /etc/uwsgi/uwsgi_emperor.ini',
+'sudo cp storagon/uwsgi_config_serverMain_OVH.ini /etc/uwsgi/vassals/uwsgi_config_serverMain_OVH.ini',
+'sudo systemctl restart uwsgi.service',
+
+#clear and copy static files
+'python manage.py collectstatic --noinput -c',

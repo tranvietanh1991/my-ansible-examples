@@ -37,6 +37,9 @@
         - uwsgi
         - celery
 
+    - name: chmod log dir
+      command: sudo chmod -R 777 /var/www/storagon/log
+
     - name: install django
       pip: name=django version=1.7
       sudo: yes
@@ -71,16 +74,16 @@
         - pycrypto
 
     - name: django manage.py makemigrations
-      command: python manage.py makemigrations servermain
+      command: sudo python manage.py makemigrations servermain
       args:
         chdir: /var/www/storagon
 
     - name: django manage.py migrate
-      command: python manage.py migrate
+      command: sudo python manage.py migrate
       args:
         chdir: /var/www/storagon
 
     - name: django manage.py test
-      command: python manage.py test
+      command: sudo python manage.py test
       args:
         chdir: /var/www/storagon
