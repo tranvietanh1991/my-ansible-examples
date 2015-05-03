@@ -24,7 +24,7 @@
     - name: create log dir
       command: mkdir {{ ch_dir }}/storagon/log
       args:
-        creates: {{ ch_dir }}/storagon/log
+        creates: "{{ ch_dir }}"/storagon/log
 
     - name: install django
       pip: name=django version=1.7
@@ -62,14 +62,14 @@
     - name: django manage.py makemigrations
       command: python manage.py makemigrations servermain
       args:
-        chdir: {{ ch_dir }}/storagon
+        chdir: "{{ ch_dir }}"/storagon
 
     - name: django manage.py migrate
       command: python manage.py migrate
       args:
-        chdir: {{ ch_dir }}/storagon
+        chdir: "{{ ch_dir }}"/storagon
 
     - name: django manage.py test
       command: python manage.py test
       args:
-        chdir: {{ ch_dir }}/storagon
+        chdir: "{{ ch_dir }}"/storagon
