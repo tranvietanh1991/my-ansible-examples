@@ -16,10 +16,11 @@
 
   tasks:
     - name: clone repo
-      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon
+      git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git
       sudo: yes
       args:
-        creates: /var/www/storagon
+        dest: /var/www/storagon
+        update: no
       #no_log: True
 
 
