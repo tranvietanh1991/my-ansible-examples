@@ -5,11 +5,13 @@
   serial: 3 #concurent processing nodes
 
   vars:
-    storagon_version: HEAD
+    storagon_version: origin/master
     storagon_setting: settings.py
     storagon_httpd_conf: httpd.conf
     storagon_nginx_conf: nginx.conf
     storagon_uwsgi_conf: uwsgi_config.ini
+    storagon_static_dir: /var/www/storagon/static
+    storagon_media_dir: /var/www/storagon/media
 
   tasks:
     - name: fetch repo
@@ -18,8 +20,8 @@
         chdir: /var/www/storagon
       no_log: True
 
-    - name: update repo
-      command: sudo git reset --hard origin/master
+    - name: update repo to specific version in {{ storagon_version }}
+      command: sudo git reset --hard {{ storagon_version }}
       args:
         chdir: /var/www/storagon
 
@@ -35,14 +37,14 @@
       when: storagon_setting != "settings.py"
 
     - name: create static dir
-      command: sudo mkdir /var/www/storagon/static
+      command: sudo mkdir {{ storagon_static_dir }}
       args:
-        creates: /var/www/storagon/static
+        creates: {{ storagon_static_dir }}
 
     - name: create media dir
-      command: sudo mkdir /var/www/storagon/media
+      command: sudo mkdir {{ storagon_media_dir }}
       args:
-        creates: /var/www/storagon/media
+        creates: {{ storagon_media_dir }}
 
     #servermain
 

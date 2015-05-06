@@ -9,7 +9,10 @@
   serial: 5 #concurent processing nodes
 
   vars:
+    bitbucket_password: fill_me_in
     run_server_immediately: True
+    httpd_port: 80
+    nginx_port: 8080
 
   tasks:
     - name: clone repo
@@ -52,7 +55,6 @@
         - django-suit
         - django-suit-redactor
         - django-cors-headers
-        - mongoengine
         - blinker
         - celery
         - django-celery

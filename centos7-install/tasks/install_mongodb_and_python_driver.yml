@@ -5,11 +5,8 @@
   sudo: yes
 
 - name: install mongodb
-  yum: name={{ item }} state=latest
+  yum: name=mongodb-org state=latest
   sudo: yes
-  with_items:
-    - mongo-10gen
-    - mongo-10gen-server
 
 - name: start and enable mongod service
   service: name=mongod state=started enabled=yes
@@ -17,4 +14,8 @@
 
 - name: install mongodb python driver using pip
   pip: name=pymongo version=2.8
+  sudo: yes
+
+- name: install mongoengine ORM
+  pip: name=mongoengine version=0.8.7
   sudo: yes
