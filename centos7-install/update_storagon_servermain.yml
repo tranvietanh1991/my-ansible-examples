@@ -5,6 +5,7 @@
   serial: 3 #concurent processing nodes
 
   vars:
+    bitbucket_password: fill_me_in
     storagon_version: origin/master
     storagon_setting: settings.py
     storagon_httpd_conf: httpd.conf
@@ -39,12 +40,12 @@
     - name: create static dir
       command: sudo mkdir {{ storagon_static_dir }}
       args:
-        creates: {{ storagon_static_dir }}
+        creates: '{{ storagon_static_dir }}'
 
     - name: create media dir
       command: sudo mkdir {{ storagon_media_dir }}
       args:
-        creates: {{ storagon_media_dir }}
+        creates: '{{ storagon_media_dir }}'
 
     #servermain
 
