@@ -18,7 +18,10 @@
     - name: clone repo
       git: repo=https://tranvietanh1991:{{ bitbucket_password }}@bitbucket.org/tranvietanh1991/storagon.git dest=/var/www/storagon
       sudo: yes
+      args:
+        creates: /var/www/storagon
       #no_log: True
+
 
     - name: create database
       mysql_db: name=storagon encoding=utf8 state=present
