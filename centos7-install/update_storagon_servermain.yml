@@ -30,6 +30,7 @@
       command: sudo rm -f storagon/settings.pyc
       args:
         chdir: /var/www/storagon
+        removes: storagon/settings.pyc
 
     - name: overide settings.py
       command: sudo cp -f storagon/{{ storagon_setting }} storagon/settings.py
