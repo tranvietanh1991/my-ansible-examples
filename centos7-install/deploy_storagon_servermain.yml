@@ -10,7 +10,6 @@
 
   vars:
     bitbucket_password: fill_me_in
-    run_server_immediately: True
     httpd_port: 80
     nginx_port: 8080
 
@@ -104,6 +103,3 @@
 
     - name: django load superuser (admin/admin)
       django_manage: command=loaddata app_path=/var/www/storagon fixtures=/var/www/storagon/default_admin_user.json
-
-- include: update_storagon_servermain.yml
-  when: run_server_immediately == True
