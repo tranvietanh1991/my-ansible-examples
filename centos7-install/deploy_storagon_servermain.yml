@@ -95,5 +95,5 @@
       copy: src=files/default_admin_user.json dest=/var/www/storagon/default_admin_user.json
       sudo: yes
 
-    - name: django load super username: admin password: admin
+    - name: django load superuser (admin/admin)
       django_manage: command=loaddata app_path=/var/www/storagon fixtures=/var/www/storagon/default_admin_user.json
