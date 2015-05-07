@@ -51,6 +51,8 @@
     - name: install django-cache-machine from git
       pip: name='git+https://github.com/jbalogh/django-cache-machine.git#egg=django-cache-machine'
       sudo: yes
+      args:
+        chdir: /var/www/storagon
 
     - name: install dependant lib
       pip: name={{ item }}
