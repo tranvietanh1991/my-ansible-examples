@@ -48,6 +48,9 @@
       args:
         creates: '{{ storagon_media_dir }}'
 
+    - name: django manage.py test
+      django_manage: command=test app_path=/var/www/storagon
+
     #servermain
 
     - name: overide httpd.conf
