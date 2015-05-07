@@ -48,11 +48,16 @@
       pip: name=django version=1.7
       sudo: yes
 
+    - name: check if repo django-cache-machine already exists
+      stat: path=/var/www/storagon/src/django-cache-machine
+      register: django_cache_machine
+
     - name: install django-cache-machine from git
       pip: name='git+https://github.com/jbalogh/django-cache-machine.git#egg=django-cache-machine'
       sudo: yes
       args:
         chdir: /var/www/storagon
+      when: django_cache_machine.stat.isdir is not defined
 
     - name: install dependant lib
       pip: name={{ item }}
