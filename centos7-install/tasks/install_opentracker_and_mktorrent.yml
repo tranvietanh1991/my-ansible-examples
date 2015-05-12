@@ -9,12 +9,12 @@
 - name: unzip libowfat source code
   command: unzip ~/libowfat.zip
   args:
-    creates: ~/libowfat/make
+    creates: ~/libowfat
 
 - name: unzip opentracker source code
   command: unzip ~/opentracker.zip
   args:
-    creates: ~/opentracker/make
+    creates: ~/opentracker
 
 - name: make libowfat from source
   command: make
