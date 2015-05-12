@@ -9,15 +9,13 @@
   sudo: yes
 
 - name: unzip libowfat source code
-  command: unzip libowfat.zip
+  command: unzip ~/libowfat.zip
   args:
-    chdir: ~
     creates: ~/libowfat/make
 
 - name: unzip opentracker source code
-  command: unzip opentracker.zip
+  command: unzip ~/opentracker.zip
   args:
-    chdir: ~
     creates: ~/opentracker/make
 
 - name: make libowfat from source
