@@ -28,6 +28,12 @@
     chdir: ~/opentracker
     creates: ~/opentracker/opentracker
 
+- name: link opentracker
+  command: ln -s ~/opentracker/opentracker /usr/bin/opentracker
+  args:
+    chdir: ~/opentracker
+    creates: /usr/bin/opentracker
+
 - name: install mktorrent
   yum: name=mktorrent state=latest
   sudo: yes
