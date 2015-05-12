@@ -1,0 +1,37 @@
+---
+
+- name: transfering libowfat source code
+  copy: src=files/opentracker/libowfat.zip dest=~/libowfat.zip owner=root group=root mode=0644
+  sudo: yes
+
+- name: transfering opentracker source code
+  copy: src=files/opentracker/opentracker.zip dest=~/opentracker.zip owner=root group=root mode=0644
+  sudo: yes
+
+- name: unzip libowfat source code
+  command: tar -xf libowfat.zip
+  args:
+    chdir: ~
+    creates: ~/libowfat/make
+
+- name: unzip opentracker source code
+  command: tar -xf opentracker.zip
+  args:
+    chdir: ~
+    creates: ~/opentracker/make
+
+- name: make libowfat from source
+  command: ./make
+  args:
+    chdir: ~/libowfat
+    creates: ~/libowfat/examples/CVS/Root
+
+- name: make opentracker from source
+  command: ./make
+  args:
+    chdir: ~/opentracker
+    creates: ~/opentracker/opentracker
+
+- name: install mktorrent
+  yum: name=mktorrent state=latest
+  sudo: yes

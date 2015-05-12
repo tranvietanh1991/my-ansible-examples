@@ -1,0 +1,8 @@
+---
+
+- name: test task
+  hosts: all
+  serial: 3 #concurent processing nodes
+
+  tasks:
+    - include: tasks/install_opentracker_and_mktorrent.yml
