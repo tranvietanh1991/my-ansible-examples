@@ -1,11 +1,11 @@
 ---
 
 - name: transfering libowfat source code
-  copy: src=files/opentracker/libowfat.zip dest=~/libowfat.zip owner=root group=root mode=0644
+  copy: src=files/opentracker/libowfat.zip dest=~/libowfat.zip mode=0644
   sudo: yes
 
 - name: transfering opentracker source code
-  copy: src=files/opentracker/opentracker.zip dest=~/opentracker.zip owner=root group=root mode=0644
+  copy: src=files/opentracker/opentracker.zip dest=~/opentracker.zip mode=0644
   sudo: yes
 
 - name: unzip libowfat source code
