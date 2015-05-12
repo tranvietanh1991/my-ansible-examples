@@ -17,13 +17,13 @@
     creates: ~/opentracker/make
 
 - name: make libowfat from source
-  command: ./make
+  command: make
   args:
     chdir: ~/libowfat
-    creates: ~/libowfat/examples/CVS/Root
+    creates: ~/libowfat/open.a
 
 - name: make opentracker from source
-  command: ./make
+  command: make
   args:
     chdir: ~/opentracker
     creates: ~/opentracker/opentracker
