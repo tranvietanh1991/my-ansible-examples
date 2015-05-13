@@ -1,5 +1,9 @@
 ---
 
+- name: add nginx uptodate repo
+  copy: src=files/nginx.repo dest=/etc/yum.repos.d/nginx.repo owner=root group=root mode=0644
+  sudo: yes
+
 - name: install nginx
   yum: name=nginx state=latest
   sudo: yes

@@ -65,6 +65,7 @@
         - django-suit
         - django-suit-redactor
         - django-cors-headers
+        - docutils
         - blinker
         - celery
         - django-celery
