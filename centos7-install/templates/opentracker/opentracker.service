@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenTracker service using screen
+After=syslog.target
+
+[Service]
+ExecStart = /usr/bin/screen -L -S opentracker opentracker -f /etc/opentracker.conf
+ExecStop = /usr/bin/screen -S opentracker -X kill
+ExecReload = /usr/bin/screen -S opentracker -X kill; /usr/bin/screen -L -S opentracker opentracker -f /etc/opentracker.conf
+Restart = always
+Type = notify
+NotifyAccess = main
+PIDFile = /var/run/opentracker.pid
+
+[Install]
+WantedBy=multi-user.target

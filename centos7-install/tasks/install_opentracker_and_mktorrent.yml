@@ -33,7 +33,6 @@
   sudo: yes
   args:
     chdir: '{{ ansible_env.HOME }}'
-    creates: /usr/local/bin/opentracker
 
 - name: install mktorrent
   yum: name=mktorrent state=latest
