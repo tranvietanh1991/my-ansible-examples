@@ -31,7 +31,7 @@
 - name: link opentracker
   command: ln -s ~/opentracker/opentracker /usr/bin/opentracker
   args:
-    chdir: {{ ansible_env.HOME }}
+    chdir: '{{ ansible_env.HOME }}'
     creates: /usr/local/bin/opentracker
 
 - name: install mktorrent
