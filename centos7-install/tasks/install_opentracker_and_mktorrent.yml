@@ -30,10 +30,9 @@
 
 - name: link opentracker
   command: ln -s ~/opentracker/opentracker /usr/bin/opentracker
-  sudo: yes
   args:
-    chdir: ~/opentracker
-    creates: /usr/bin/opentracker
+    chdir: {{ ansible_env.HOME }}
+    creates: /usr/local/bin/opentracker
 
 - name: install mktorrent
   yum: name=mktorrent state=latest
