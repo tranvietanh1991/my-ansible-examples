@@ -55,7 +55,7 @@
       pip: name='git+https://github.com/jbalogh/django-cache-machine.git#egg=django-cache-machine'
       sudo: yes
       args:
-        chdir: /var/www/storagon
+        chdir: /usr/lib/python2.7/site-packages
       when: django_cache_machine.stat.isdir is not defined
 
     - name: install dependant lib
