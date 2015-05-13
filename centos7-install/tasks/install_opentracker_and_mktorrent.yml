@@ -29,7 +29,8 @@
     creates: ~/opentracker/opentracker
 
 - name: link opentracker
-  command: ln -s ~/opentracker/opentracker /usr/bin/opentracker
+  file: src=~/opentracker/opentracker  dest=/usr/bin/opentracker state=link
+  sudo: yes
   args:
     chdir: '{{ ansible_env.HOME }}'
     creates: /usr/local/bin/opentracker
