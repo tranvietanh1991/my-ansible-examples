@@ -3,13 +3,13 @@ Description=OpenTracker service using screen
 After=syslog.target
 
 [Service]
-ExecStart = /usr/bin/screen -S opentracker -L -dm opentracker -f /etc/opentracker/opentracker.conf
-ExecStop = /usr/bin/pkill -9 opentracker
-ExecReload = /usr/bin/pkill -9 opentracker; /usr/bin/screen -S opentracker -L -dm opentracker -f /etc/opentracker/opentracker.conf
-Restart = always
-Type = notify
+ExecStart = /usr/bin/screen -S opentracker -dm opentracker -f /etc/opentracker/opentracker.conf
+ExecStop = /usr/bin/screen -S opentracker -X quit
+
+Restart = on-failure
+Type = forking
 NotifyAccess = main
-PIDFile = /var/run/opentracker.pid
+
 
 [Install]
 WantedBy=multi-user.target

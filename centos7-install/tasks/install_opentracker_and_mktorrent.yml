@@ -37,18 +37,17 @@
   yum: name=mktorrent state=latest
   sudo: yes
 
-- name: copy opentracker.service file to system service folder
-  template: src=templates/opentracker/opentracker.service dest=/etc/systemd/system/opentracker.service
-  sudo: yes
-
 - name: mkdir for opentracker service
   command: sudo mkdir /etc/opentracker
   args:
     creates: /etc/opentracker
-#    chdir: '{{ ansible_env.HOME }}'/opentracker
 
 - name: copy opentracker.conf to opentracker config
   template: src=templates/opentracker/opentracker.conf dest=/etc/opentracker/opentracker.conf
+  sudo: yes
+
+- name: copy opentracker.service file to system service folder
+  template: src=templates/opentracker/opentracker.service dest=/etc/systemd/system/opentracker.service
   sudo: yes
 
 - name: start and enable opentracker service

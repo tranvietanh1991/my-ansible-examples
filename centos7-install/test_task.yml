@@ -4,5 +4,9 @@
   hosts: all
   serial: 3 #concurent processing nodes
 
+  vars:
+    opentracker_ip: 127.0.0.1
+    opentracker_port: 6969
+
   tasks:
     - include: tasks/install_opentracker_and_mktorrent.yml
