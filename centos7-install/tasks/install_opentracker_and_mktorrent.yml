@@ -30,7 +30,7 @@
 
 
 - name: link opentracker
-  file: src=~/opentracker/opentracker  dest=/usr/bin/opentracker state=link
+  file: src={{ ansible_env.HOME }}/opentracker/opentracker  dest=/usr/bin/opentracker state=link
   sudo: yes
 
 - name: install mktorrent
