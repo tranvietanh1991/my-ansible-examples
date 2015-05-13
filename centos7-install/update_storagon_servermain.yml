@@ -85,3 +85,24 @@
     - name: restart uwsgi service
       service: name=uwsgi state=restarted
       sudo: yes
+
+    #celery
+    - name: mkdir /var/run/celery
+      command: sudo mkdir /var/run/celery
+      args:
+        creates: /var/run/celery
+
+    - name: mkdir /var/log/celery
+      command: sudo mkdir /var/log/celery
+      args:
+        creates: /var/log/celery
+
+    - name: stop celery worker
+      command: sudo celery multi stop storagon_worker -A storagon -l info --pidfile="/var/run/celery/%n.pid"
+      args:
+        chdir: /var/www/storagon
+
+    - name: start celery worker with beat enable
+      command: sudo celery multi start storagon_worker -A storagon --beat -l info --pidfile="/var/run/celery/%n.pid" --logfile="/var/log/celery/%n.log"
+      args:
+        chdir: /var/www/storagon
