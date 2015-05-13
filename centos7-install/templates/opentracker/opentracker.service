@@ -3,9 +3,9 @@ Description=OpenTracker service using screen
 After=syslog.target
 
 [Service]
-ExecStart = /usr/bin/screen -L -S opentracker opentracker -f /etc/opentracker.conf
+ExecStart = /usr/bin/screen -L -S opentracker opentracker -f /etc/opentracker/opentracker.conf
 ExecStop = /usr/bin/screen -S opentracker -X kill
-ExecReload = /usr/bin/screen -S opentracker -X kill; /usr/bin/screen -L -S opentracker opentracker -f /etc/opentracker.conf
+ExecReload = /usr/bin/screen -S opentracker -X kill; /usr/bin/screen -L -S opentracker opentracker -f /etc/opentracker/opentracker.conf
 Restart = always
 Type = notify
 NotifyAccess = main

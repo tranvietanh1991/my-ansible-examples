@@ -28,12 +28,29 @@
     chdir: ~/opentracker
     creates: ~/opentracker/opentracker
 
+
 - name: link opentracker
   file: src=~/opentracker/opentracker  dest=/usr/bin/opentracker state=link
   sudo: yes
-  args:
-    chdir: '{{ ansible_env.HOME }}'
 
 - name: install mktorrent
   yum: name=mktorrent state=latest
+  sudo: yes
+
+- name: copy opentracker.service file to system service folder
+  template: src=templates/opentracker/opentracker.service dest=/etc/systemd/system/opentracker.service
+  sudo: yes
+
+- name: mkdir for opentracker service
+  command: sudo mkdir /etc/opentracker
+  args:
+    creates: /etc/opentracker
+#    chdir: '{{ ansible_env.HOME }}'/opentracker
+
+- name: copy opentracker.conf to opentracker config
+  template: src=templates/opentracker/opentracker.conf dest=/etc/opentracker/opentracker.conf
+  sudo: yes
+
+- name: start and enable opentracker service
+  service: name=opentracker state=started enabled=yes
   sudo: yes
