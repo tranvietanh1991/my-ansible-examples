@@ -43,12 +43,15 @@
     - name: chmod log dir
       command: sudo chmod -R 777 /var/www/storagon/log
 
+    - name: chmod var/lib/nginx dir
+      command: sudo chmod -R 777 /var/lib/nginx/
+
     - name: install django
       pip: name=django version=1.7
       sudo: yes
 
     - name: check if repo django-cache-machine already exists
-      stat: path=/var/www/storagon/src/django-cache-machine
+      stat: path=/usr/lib/python2.7/site-packages/src/django-cache-machine
       register: django_cache_machine
 
     - name: install django-cache-machine from git
