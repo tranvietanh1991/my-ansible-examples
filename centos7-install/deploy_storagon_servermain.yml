@@ -46,16 +46,6 @@
       args:
         creates: /var/www/storagon/log
 
-    - name: create sub log dir
-      command: sudo mkdir /var/www/storagon/log/{{ item }}
-      args:
-        creates: /var/www/storagon/log/{{ item}}
-      with_items:
-        - celery
-
-    - name: chmod log dir
-      command: sudo chmod -R 777 /var/www/storagon/log
-
     - name: install django
       pip: name=django version=1.7
       sudo: yes
@@ -110,6 +100,9 @@
       command: sudo python manage.py test
       args:
         chdir: /var/www/storagon
+
+    - name: chmod log dir
+      command: sudo chmod -R 777 /var/www/storagon/log
 
     - name: copy default admin user json fixture
       copy: src=files/default_admin_user.json dest=/var/www/storagon/default_admin_user.json
