@@ -56,6 +56,11 @@
     - name: chmod log dir
       command: sudo chmod -R 777 /var/www/storagon/log
 
+    - name: create var/lib/nginx dir to store temporary file
+      command: sudo mkdir /var/lib/nginx/
+      args:
+        creates: /var/lib/nginx
+
     - name: chmod var/lib/nginx dir
       command: sudo chmod -R 777 /var/lib/nginx/
 
