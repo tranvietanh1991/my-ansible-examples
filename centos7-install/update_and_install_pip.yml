@@ -7,12 +7,9 @@
   tasks:
     - name: install dev lib
       command: sudo yum groupinstall -y development
-      args:
-        creates: /usr/bin/vim
 
     - name: upgrade all packages
       yum: name=* state=latest
-#      sudo_user: root
       sudo: yes
 
     - name: install proper lib and tool
