@@ -16,6 +16,14 @@
   template: src=templates/nginx/default.conf dest=/etc/nginx/conf.d/default.conf
   sudo: yes
 
+- name: mkdir var/lib/nginx dir
+  command: sudo mkdir /var/lib/nginx/
+  args:
+    creates: /var/lib/nginx
+
+- name: chmod var/lib/nginx dir
+  command: sudo chmod -R 777 /var/lib/nginx/
+
 - name: start and enable nginx service
   service: name=nginx state=started enabled=yes
   sudo: yes

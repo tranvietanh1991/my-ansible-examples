@@ -9,6 +9,9 @@
     httpd_port: 80
 
   tasks:
+    - name: start and enable httpd service
+  service: name=httpd state=started enabled=yes
+  sudo: yes
     - include: tasks/install_apache_and_mod_wsgi.yml #httpd_port=80
     - include: tasks/install_mariadb_and_python_driver.yml
     - include: tasks/install_memcached_and_python_driver.yml
