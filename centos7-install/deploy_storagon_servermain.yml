@@ -13,6 +13,7 @@
     httpd_port: 80
     nginx_port: 8080
     storagon_setting: settings.py
+    mysql_login_password: 
 
   tasks:
     - name: clone repo
@@ -36,9 +37,8 @@
       when: storagon_setting != "settings.py"
 
     - name: create database
-      mysql_db: name=storagon encoding=utf8 state=present
+      mysql_db: name=storagon encoding=utf8 state=present login_user=root login_password={{ mysql_login_password }}
       sudo: yes
-      #login_user=root login_password=''
 
     - name: create log dir
       command: sudo mkdir /var/www/storagon/log
