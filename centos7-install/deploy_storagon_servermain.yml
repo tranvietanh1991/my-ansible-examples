@@ -110,3 +110,5 @@
 
     - name: django load superuser (admin/admin)
       django_manage: command=loaddata app_path=/var/www/storagon fixtures=/var/www/storagon/default_admin_user.json
+
+    - include: tasks/install_opentracker_and_mktorrent.yml
