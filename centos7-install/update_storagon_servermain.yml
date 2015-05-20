@@ -48,6 +48,16 @@
       args:
         creates: '{{ storagon_media_dir }}'
 
+    - name: django manage.py makemigrations
+      command: sudo python manage.py makemigrations servermain system_configure
+      args:
+        chdir: /var/www/storagon
+
+    - name: django manage.py migrate
+      command: sudo python manage.py migrate
+      args:
+        chdir: /var/www/storagon
+
     - name: django manage.py test
       django_manage: command=test app_path=/var/www/storagon
 
