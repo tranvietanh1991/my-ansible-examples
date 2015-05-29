@@ -13,6 +13,8 @@
     httpd_port: 80
     nginx_port: 8080
     storagon_setting: settings.py
+    opentracker_ip: 0.0.0.0
+    opentracker_port: 6969
 
   tasks:
     - name: clone repo
@@ -22,6 +24,18 @@
         dest: /var/www/storagon
         update: no
       no_log: True
+
+    - name: clear settings.pyc
+      command: sudo rm -f storagon/settings.pyc
+      args:
+        chdir: /var/www/storagon
+        removes: storagon/settings.pyc
+
+    - name: overide settings.py
+      command: sudo cp -f storagon/{{ storagon_setting }} storagon/settings.py
+      args:
+        chdir: /var/www/storagon
+      when: storagon_setting != "settings.py"
 
     - name: create database
       mysql_db: name=storagon encoding=utf8 state=present
