@@ -23,18 +23,6 @@
         update: no
       no_log: True
 
-    - name: clear settings.pyc
-      command: sudo rm -f storagon/settings.pyc
-      args:
-        chdir: /var/www/storagon
-        removes: storagon/settings.pyc
-
-    - name: overide settings.py
-      command: sudo cp -f storagon/{{ storagon_setting }} storagon/settings.py
-      args:
-        chdir: /var/www/storagon
-      when: storagon_setting != "settings.py"
-
     - name: create database
       mysql_db: name=storagon encoding=utf8 state=present
       sudo: yes
