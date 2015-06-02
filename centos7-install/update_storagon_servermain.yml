@@ -49,7 +49,7 @@
         creates: '{{ storagon_media_dir }}'
 
     - name: django manage.py makemigrations
-      command: sudo python manage.py makemigrations servermain system_configure
+      command: sudo python manage.py makemigrations
       args:
         chdir: /var/www/storagon
 
