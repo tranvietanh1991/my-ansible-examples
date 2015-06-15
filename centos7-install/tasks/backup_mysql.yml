@@ -1,5 +1,10 @@
 ---
 
+- name: mkdir backup
+  command: sudo mkdir ~/backup
+  args:
+    creates: ~/backup
+
 - name: dumping mysql data
   shell: mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > ~/backup/storagon.sql
 

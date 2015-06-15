@@ -1,5 +1,10 @@
 ---
 
+- name: mkdir backup
+  command: sudo mkdir ~/backup
+  args:
+    creates: ~/backup
+
 - name: dumping mongodb data
   command: mongodump --db {{database_name}} --out backup/mongodb
   args:
