@@ -5,8 +5,8 @@
   serial: 3 #concurent processing nodes
 
   vars:
-    opentracker_ip: 127.0.0.1
-    opentracker_port: 6969
+    mysql_user: root
+    database_name: storagon
 
   tasks:
-    - include: tasks/install_opentracker_and_mktorrent.yml
+    - include: tasks/backup_mysql.yml
