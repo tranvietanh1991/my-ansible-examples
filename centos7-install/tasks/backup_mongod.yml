@@ -6,7 +6,7 @@
     creates: ~/backup
 
 - name: dumping mongodb data
-  command: mongodump --db {{database_name}} --out backup/mongodb
+  command: sudo mongodump --db {{database_name}} --out backup/mongodb
   args:
     chdir: ~
 
