@@ -10,3 +10,4 @@
 
   tasks:
     - include: tasks/backup_mysql.yml
+    - include: tasks/backup_mongodb.yml
