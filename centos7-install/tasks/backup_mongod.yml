@@ -5,6 +5,9 @@
   args:
     creates: ~/backup
 
+- name: chmod backup dir
+  command: sudo chmod -R 777 ~/backup
+
 - name: dumping mongodb data
   command: sudo mongodump --db {{database_name}} --out backup/mongodb
   args:
@@ -16,4 +19,4 @@
     chdir: ~
 
 - name: fetching mongodb data file to ansible tower host
-  fetch: src=~/backup/storagon.tar dest=~/backup/{{ ansible_hostname }}/ flat=yes
+  fetch: src=~/backup/storagon.tar dest=/home/{{ ansible_hostname }}/ flat=yes
