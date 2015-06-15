@@ -1,0 +1,14 @@
+---
+
+- name: backup_storagon_servermain.yml
+  hosts: all
+  serial: 5 #concurent processing nodes
+
+  vars:
+    mysql_user: root
+    mysql_password:
+    database_name: storagon
+
+  tasks:
+    - include: tasks/backup_mysql.yml
+    - include: tasks/backup_mongodb.yml
