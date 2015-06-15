@@ -1,7 +1,7 @@
 ---
 
 - name: dumping mysql data
-  command: mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > backup/storagon.sql
+  shell: mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > backup/storagon.sql
   args:
     chdir: ~
 
