@@ -1,9 +1,7 @@
 ---
 
 - name: dumping mysql data
-  shell: mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > backup/storagon.sql
-  args:
-    chdir: ~
+  shell: mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > ~/backup/storagon.sql
 
 - name: fetching mysql data file to ansible tower host
   fetch: src=~/backup/storagon.sql dest=~/backup/{{ ansible_hostname }}/ flat=yes
