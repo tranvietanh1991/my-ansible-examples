@@ -50,6 +50,14 @@
       pip: name=django version=1.7
       sudo: yes
 
+    - name: install djangorestframework
+      pip: name=djangorestframework version=3.1.2
+      sudo: yes
+
+    - name: install django-rest-framework-mongoengine
+      pip: name=django-rest-framework-mongoengine version=2.0.2
+      sudo: yes
+
     - name: check if repo django-cache-machine already exists
       stat: path=/usr/lib/python2.7/site-packages/src/django-cache-machine
       register: django_cache_machine
@@ -76,7 +84,6 @@
         - pyyaml
         - django-oauth-toolkit
         - django-memcache-admin
-        - djangorestframework
         - markdown
         - django-filter
         - djangorestframework-bulk
