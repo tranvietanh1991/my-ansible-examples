@@ -13,6 +13,7 @@
     storagon_uwsgi_conf: uwsgi_config.ini
     storagon_static_dir: /var/www/storagon/static
     storagon_media_dir: /var/www/storagon/media
+    test_apps: SKIP
 
   tasks:
     - name: fetch repo
@@ -59,7 +60,8 @@
         chdir: /var/www/storagon
 
     - name: django manage.py test
-      django_manage: command=test app_path=/var/www/storagon
+      django_manage: command=test {{test_apps}} app_path=/var/www/storagon
+      when: test_apps != "SKIP"
 
     #servermain
 
