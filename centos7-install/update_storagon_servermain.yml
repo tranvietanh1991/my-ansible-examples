@@ -14,6 +14,7 @@
     storagon_static_dir: /var/www/storagon/static
     storagon_media_dir: /var/www/storagon/media
     test_apps: SKIP
+    collectstatic: True
 
   tasks:
     - name: fetch repo
@@ -78,6 +79,7 @@
       command: sudo python manage.py collectstatic --noinput -c
       args:
         chdir: /var/www/storagon
+      when: collectstatic == True
 
     #serverfile
     - name: overide nginx.conf
