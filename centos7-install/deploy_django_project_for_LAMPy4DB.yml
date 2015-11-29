@@ -36,6 +36,7 @@
     - name: create database
       mysql_db: name={{ database_name }} encoding=utf8 state=present
       sudo: yes
+      ignore_errors: yes
 
     - name: create log dir
       command: sudo mkdir /var/www/{{ project_name }}/log
