@@ -15,6 +15,7 @@
     storagon_media_dir: /var/www/storagon/media
     test_apps: SKIP
     collectstatic: True
+    pip_requirements: pip_requirements.yml
 
   tasks:
     - name: fetch repo
