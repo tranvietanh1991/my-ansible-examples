@@ -18,3 +18,4 @@
 - name: open listen port/tcp
   firewalld: zone=public port={{ httpd_port }}/tcp permanent=true state=enabled immediate=true
   sudo: yes
+  ignore_errors: yes
