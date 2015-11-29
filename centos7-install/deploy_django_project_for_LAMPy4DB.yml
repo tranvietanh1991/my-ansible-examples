@@ -14,6 +14,7 @@
     project_name: orderus
     project_setting: settings.py
     pip_requirements: pip_requirements.yml
+    makemigrations_modules: shop_module user_module system_configure
 
 
   tasks:
@@ -47,7 +48,7 @@
         chdir: /var/www/{{ project_name }}
 
     - name: django manage.py makemigrations
-      command: sudo python manage.py makemigrations servermain system_configure
+      command: sudo python manage.py makemigrations {{ makemigrations_modules }}
       args:
         chdir: /var/www/{{ project_name }}
 
