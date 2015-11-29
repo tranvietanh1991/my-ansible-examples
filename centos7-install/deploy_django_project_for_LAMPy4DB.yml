@@ -15,7 +15,8 @@
     project_setting: settings.py
     pip_requirements: pip_requirements.yml
     makemigrations_modules: shop_module user_module system_configure
-
+    project_httpd_conf: httpd.conf
+    collectstatic: True
 
   tasks:
     - name: clone repo
@@ -71,3 +72,19 @@
 
     - name: django load superuser (admin/admin)
       django_manage: command=loaddata app_path=/var/www/{{ project_name }} fixtures=/var/www/{{ project_name }}/default_admin_user.json
+
+    # Config apache
+    - name: overide httpd.conf
+      command: sudo cp -f {{ project_name }}/{{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: restart httpd service
+      service: name=httpd state=restarted
+      sudo: yes
+
+    - name: django manage.py collectstatic
+      command: sudo python manage.py collectstatic --noinput -c
+      args:
+        chdir: /var/www/{{ project_name }}
+      when: collectstatic == True
