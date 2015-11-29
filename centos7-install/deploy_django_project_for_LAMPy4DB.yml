@@ -17,6 +17,7 @@
     makemigrations_modules: shop_module user_module system_configure
     project_httpd_conf: httpd.conf
     collectstatic: True
+    mysql_root_password: ""
 
   tasks:
     - name: clone repo
@@ -34,7 +35,7 @@
       when: project_setting != "settings.py"
 
     - name: create database
-      mysql_db: name={{ database_name }} encoding=utf8 state=present
+      mysql_db: name={{ database_name }} encoding=utf8 state=present login_user=root login_password={{mysql_root_password}}
       sudo: yes
       ignore_errors: yes
 

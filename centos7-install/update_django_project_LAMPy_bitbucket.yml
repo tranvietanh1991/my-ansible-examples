@@ -1,0 +1,78 @@
+---
+
+- name: update_django_project_LAMPy.yml
+  hosts: all
+  serial: 3 #concurent processing nodes
+
+  vars:
+    bitbucket_password: fill_me_in
+    gitrepo_version: origin/master
+    project_name: orderus
+    project_setting: settings.py
+    project_httpd_conf: httpd.conf
+    project_media_dir: /var/www/orderus/media
+    test_apps: SKIP
+    collectstatic: True
+
+  tasks:
+    - name: fetch repo
+      shell: echo {{bitbucket_password}} | sudo git fetch --all
+      args:
+        chdir: /var/www/{{ project_name }}
+      no_log: True
+
+    - name: update repo to specific version in {{ gitrepo_version }}
+      command: sudo git reset --hard {{ gitrepo_version }}
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: overide settings.py
+      command: sudo cp -f {{ project_name }}/{{ project_setting }} {{ project_name }}/settings.py
+      args:
+        chdir: /var/www/{{ project_name }}
+      when: project_setting != "settings.py"
+
+    - name: create media dir
+      command: sudo mkdir {{ project_media_dir }}
+      args:
+        creates: '{{ project_media_dir }}'
+
+    - name: django manage.py makemigrations
+      command: sudo python manage.py makemigrations
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: django manage.py migrate
+      command: sudo python manage.py migrate
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: django manage.py test
+      django_manage: command=test {{test_apps}} app_path=/var/www/{{ project_name }}
+      when: test_apps != "SKIP"
+
+    #Config apache
+    - name: overide httpd.conf
+      command: sudo cp -f {{ project_name }}/{{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: restart httpd service
+      service: name=httpd state=restarted
+      sudo: yes
+
+    - name: create static dir
+      command: sudo mkdir /var/www/{{ project_name }}/static
+      args:
+        creates: /var/www/{{ project_name }}/static
+      when: collectstatic == True
+
+    - name: chmod static dir
+      command: sudo chmod -R 777 /var/www/{{ project_name }}/static
+      when: collectstatic == True
+
+    - name: django manage.py collectstatic
+      command: sudo python manage.py collectstatic --noinput -c
+      args:
+        chdir: /var/www/{{ project_name }}
+      when: collectstatic == True
