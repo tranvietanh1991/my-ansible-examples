@@ -77,6 +77,16 @@
       service: name=httpd state=restarted
       sudo: yes
 
+    - name: create static dir
+      command: sudo mkdir /var/www/{{ project_name }}/static
+      args:
+        creates: /var/www/{{ project_name }}/static
+      when: collectstatic == True
+
+    - name: chmod static dir
+      command: sudo chmod -R 777 /var/www/{{ project_name }}/static
+      when: collectstatic == True
+
     - name: django manage.py collectstatic
       command: sudo python manage.py collectstatic --noinput -c
       args:
