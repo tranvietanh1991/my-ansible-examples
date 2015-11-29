@@ -67,13 +67,6 @@
     - name: chmod log dir
       command: sudo chmod -R 777 /var/www/{{ project_name }}/log
 
-    - name: copy default admin user json fixture
-      copy: src=files/default_admin_user.json dest=/var/www/{{ project_name }}/default_admin_user.json
-      sudo: yes
-
-    - name: django load superuser (admin/admin)
-      django_manage: command=loaddata app_path=/var/www/{{ project_name }} fixtures=/var/www/{{ project_name }}/default_admin_user.json
-
     # Config apache
     - name: overide httpd.conf
       command: sudo cp -f {{ project_name }}/{{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
@@ -89,3 +82,11 @@
       args:
         chdir: /var/www/{{ project_name }}
       when: collectstatic == True
+
+    - name: copy default admin user json fixture
+      copy: src=files/default_admin_user.json dest=/var/www/{{ project_name }}/default_admin_user.json
+      sudo: yes
+
+    - name: django load superuser (admin/admin)
+      django_manage: command=loaddata app_path=/var/www/{{ project_name }} fixtures=/var/www/{{ project_name }}/default_admin_user.json
+      ignore_errors: yes
