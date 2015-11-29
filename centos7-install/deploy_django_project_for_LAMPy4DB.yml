@@ -25,12 +25,6 @@
         update: no
       no_log: True
 
-    - name: clear settings.pyc
-      command: sudo rm -f {{ project_name }}/settings.pyc
-      args:
-        chdir: /var/www/{{ project_name }}
-        removes: {{ project_name }}/settings.pyc
-
     - name: overide settings.py
       command: sudo cp -f {{ project_name }}/{{ project_setting }} {{ project_name }}/settings.py
       args:
