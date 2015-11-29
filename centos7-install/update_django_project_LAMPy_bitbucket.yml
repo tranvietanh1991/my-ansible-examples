@@ -32,6 +32,12 @@
         chdir: /var/www/{{ project_name }}
       when: project_setting != "settings.py"
 
+    - name: install project pip requirements
+      pip: requirements={{ pip_requirements }}
+      sudo: yes
+      args:
+        chdir: /var/www/{{ project_name }}
+
     - name: create media dir
       command: sudo mkdir {{ project_media_dir }}
       args:
