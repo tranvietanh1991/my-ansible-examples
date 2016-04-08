@@ -17,6 +17,7 @@
     project_config: config_develop.py
     pip_requirements: pip_requirements.txt
     project_httpd_conf: httpd.conf
+    test_apps: SKIP
     collectstatic: False
     mysql_root_password: "dev0000"
 
@@ -73,9 +74,8 @@
         chdir: /var/www/{{ project_name }}
 
     - name: django manage.py test
-      command: sudo python manage.py test
-      args:
-        chdir: /var/www/{{ project_name }}
+      django_manage: command=test {{test_apps}} app_path=/var/www/{{ project_name }}
+      when: test_apps != "SKIP"
 
     - name: chmod log dir
       command: sudo chmod -R 777 /var/www/{{ project_name }}/log
