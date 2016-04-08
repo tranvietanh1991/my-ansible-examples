@@ -16,9 +16,6 @@
   sudo: yes
 
 - name: Set root user password
-  mysql_user: name=root
-              password="{{ mysql_root_password }}"
-              check_implicit_admin=yes
-              state=present
+  mysql_user: name=root password="{{ mysql_root_password }}" check_implicit_admin=yes state=present
   when: mysql_root_password != ""
   ignore_errors: yes
