@@ -115,6 +115,9 @@
       django_manage: command=loaddata app_path=/var/www/{{ project_name }} fixtures=/var/www/{{ project_name }}/default_admin_user.json
       ignore_errors: yes
 
+    - name: remove default admin fixture
+      command: sudo rm -f /var/www/{{ project_name }}/default_admin_user.json
+
     - name: start celery worker with beat enable
       command: sudo celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
       args:
