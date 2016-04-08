@@ -8,7 +8,7 @@
   serial: 5 #concurent processing nodes
 
   vars:
-    git_repo_url: https://tranvietanh1991:assembla_password@https://git.assembla.com/projectforce.git
+    git_repo_url: https://tranvietanh1991:assembla_password@git.assembla.com/projectforce.git
     gitrepo_version: origin/master
     assembla_password: fill_me_in
     httpd_port: 80
