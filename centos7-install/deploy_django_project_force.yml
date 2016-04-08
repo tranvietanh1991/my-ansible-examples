@@ -15,8 +15,9 @@
     database_name: projectf_dev
     project_name: projectforce
     project_config: config_develop.py
+    makemigrations_modules: portfolios project
     pip_requirements: pip_requirements.txt
-    project_httpd_conf: httpd.conf
+    project_httpd_conf: httpd_develop.conf
     test_apps: SKIP
     collectstatic: False
     mysql_root_password: "dev0000"
@@ -64,7 +65,7 @@
         chdir: /var/www/{{ project_name }}
 
     - name: django manage.py makemigrations
-      command: sudo python manage.py makemigrations $(find . -maxdepth 2 \( -iname "models.py" -o -iname "models" \) -exec echo {} \; | egrep  -o "/\w+/" | sed 's/\///g')
+      command: sudo python manage.py makemigrations {{ makemigrations_modules }}
       args:
         chdir: /var/www/{{ project_name }}
 
@@ -113,3 +114,8 @@
     - name: django load superuser (admin/admin)
       django_manage: command=loaddata app_path=/var/www/{{ project_name }} fixtures=/var/www/{{ project_name }}/default_admin_user.json
       ignore_errors: yes
+
+    - name: start celery worker with beat enable
+      command: sudo celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
+      args:
+        chdir: /var/www/{{ project_name }}
