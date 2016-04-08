@@ -1,0 +1,115 @@
+---
+
+- include: install_LAMPy_stack.yml
+- include: install_4DB_mariadb_mongodb_redis_memcached.yml
+
+- name: deploy_django_project_force.yml
+  hosts: all
+  serial: 5 #concurent processing nodes
+
+  vars:
+    git_repo_url: https://tranvietanh1991:assembla_password@https://git.assembla.com/projectforce.git
+    gitrepo_version: origin/master
+    assembla_password: fill_me_in
+    httpd_port: 80
+    database_name: projectf_dev
+    project_name: projectforce
+    project_config: config_develop.py
+    pip_requirements: pip_requirements.txt
+    project_httpd_conf: httpd.conf
+    collectstatic: False
+    mysql_root_password: "dev0000"
+
+  tasks:
+    - name: clone repo
+      git: repo={{ git_repo_url }}
+      sudo: yes
+      args:
+        dest: /var/www/{{ project_name }}
+        update: no
+      no_log: True
+
+    - name: fetch repo
+      shell: echo "{{assembla_password}}" | sudo git fetch --all
+      args:
+        chdir: /var/www/{{ project_name }}
+      no_log: True
+
+    - name: update repo to specific version in {{ gitrepo_version }}
+      command: sudo git reset --hard {{ gitrepo_version }}
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: overide config.py
+      command: sudo cp -f {{ project_config }} config.py
+      args:
+        chdir: /var/www/{{ project_name }}
+      when: project_config != "config.py"
+
+    - name: create database
+      mysql_db: name={{ database_name }} encoding=utf8 state=present login_user=root login_password={{mysql_root_password}}
+      sudo: yes
+      ignore_errors: yes
+
+    - name: create log dir
+      command: sudo mkdir /var/www/{{ project_name }}/log
+      args:
+        creates: /var/www/{{ project_name }}/log
+
+    - name: install project pip requirements
+      pip: requirements={{ pip_requirements }}
+      sudo: yes
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: django manage.py makemigrations
+      command: sudo python manage.py makemigrations $(find . -maxdepth 2 \( -iname "models.py" -o -iname "models" \) -exec echo {} \; | egrep  -o "/\w+/" | sed 's/\///g')
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: django manage.py migrate
+      command: sudo python manage.py migrate
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: django manage.py test
+      command: sudo python manage.py test
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: chmod log dir
+      command: sudo chmod -R 777 /var/www/{{ project_name }}/log
+
+    # Config apache
+    - name: overide httpd.conf
+      command: sudo cp -f {{ project_name }}/{{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: restart httpd service
+      service: name=httpd state=restarted
+      sudo: yes
+
+    - name: create static dir
+      command: sudo mkdir /var/www/{{ project_name }}/static
+      args:
+        creates: /var/www/{{ project_name }}/static
+      when: collectstatic == True
+
+    - name: chmod static dir
+      command: sudo chmod -R 777 /var/www/{{ project_name }}/static
+      when: collectstatic == True
+
+    - name: django manage.py collectstatic
+      command: sudo python manage.py collectstatic --noinput -c
+      args:
+        chdir: /var/www/{{ project_name }}
+      when: collectstatic == True
+
+    - name: copy default admin user json fixture
+      copy: src=files/default_admin_user.json dest=/var/www/{{ project_name }}/default_admin_user.json
+      sudo: yes
+
+    - name: django load superuser (admin/admin)
+      django_manage: command=loaddata app_path=/var/www/{{ project_name }} fixtures=/var/www/{{ project_name }}/default_admin_user.json
+      ignore_errors: yes
