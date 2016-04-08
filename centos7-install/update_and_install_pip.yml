@@ -29,29 +29,12 @@
         - firewalld
         - lsof
 
-
-    - name: download easy_install source code
-      command: wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-15.2.tar.gz
-      args:
-        chdir: ~
-        creates: ~/setuptools-15.2.tar.gz
-
-    - name: unrar easy_install source code
-      command: tar -xvf setuptools-15.2.tar.gz
-      args:
-        chdir: ~
-        creates: ~/setuptools-15.2/setup.py
-
-    - name: install easy_install from source code
-      command: sudo python setuptools-15.2/setup.py install
-      args:
-        chdir: ~
-        creates: /usr/bin/easy_install
-
-    - name: install pip using easy_install
-      command: sudo easy_install pip
-      args:
-        creates: /usr/bin/pip
+    - name: install pip via yum
+      yum: name={{ item }}
+      sudo: yes
+      with_items:
+        - python-pip
+        - python-wheel
 
     - name: upgrade pip
       command: sudo pip install --upgrade pip
