@@ -83,7 +83,7 @@
 
     # Config apache
     - name: overide httpd.conf
-      command: sudo cp -f {{ project_name }}/{{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
+      command: sudo cp -f {{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
       args:
         chdir: /var/www/{{ project_name }}
 
