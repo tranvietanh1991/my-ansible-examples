@@ -1,6 +1,7 @@
 ---
+- include: update_and_install_pip.yml
 
-- name: test task
+- name: install_docker_and_compose.yml
   hosts: all
   serial: 3 #concurent processing nodes
 
@@ -10,16 +11,7 @@
     - franklinkim.docker
     - franklinkim.docker-compose
 
-  vars:
-    mysql_user: root
-    database_name: storagon
-
   tasks:
-#    - include: tasks/install_docker.yml
-
-#    - name: install docker-compose using pip
-#      pip: name=docker-compose
-#      sudo: yes
 
     - name: allow docker containers to connect to internet
       command: firewall-cmd --permanent --zone=trusted --change-interface=docker0
