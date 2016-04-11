@@ -13,6 +13,7 @@
     project_media_dir: /var/www/orderus/media
     test_apps: SKIP
     collectstatic: True
+    kronos_installtasks: True
 
   tasks:
     - name: fetch repo
@@ -43,10 +44,10 @@
       args:
         creates: '{{ project_media_dir }}'
 
-    - name: django manage.py makemigrations
-      command: sudo python manage.py makemigrations
-      args:
-        chdir: /var/www/{{ project_name }}
+#    - name: django manage.py makemigrations
+#      command: sudo python manage.py makemigrations
+#      args:
+#        chdir: /var/www/{{ project_name }}
 
     - name: django manage.py migrate
       command: sudo python manage.py migrate
@@ -82,3 +83,9 @@
       args:
         chdir: /var/www/{{ project_name }}
       when: collectstatic == True
+
+    - name: django-kronos manage.py installtasks
+      command: sudo python manage.py installtasks
+      args:
+        chdir: /var/www/{{ project_name }}
+      when: kronos_installtasks == True
