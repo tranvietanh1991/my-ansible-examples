@@ -1,2 +1,4 @@
+/centos7-install/ansible/hosts
+/centos7-install/ansible/vars.yml
 wordpress-nginx/hosts
 .DS_Store
