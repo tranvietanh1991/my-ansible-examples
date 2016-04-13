@@ -1,0 +1,7 @@
+phantomjs_version: 2.1.1-linux-x86_64
+jython_version: 2.7.0
+jython_download_link: https://repo1.maven.org/maven2/org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar
+mysql_user: root
+mysql_password: dev0108
+database_name: prodbinstance
+sql_fetch_path: /home/cherry/

@@ -1,18 +1,23 @@
 ---
 
 - name: mkdir backup
-  command: sudo mkdir ~/backup
-  args:
-    creates: ~/backup
+  file: path=/home/backup/ state=directory mode=0777
+  sudo: yes
 
-- name: chmod backup dir
-  command: sudo chmod -R 777 ~/backup
+- name: get_date_time
+  set_fact: mydate="{{lookup('pipe','date +%Y-%m-%d_%H%M')}}"
 
-- name: dumping mysql data
-  shell: sudo mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > ~/backup/dump20161008.sql
+- name: dumping mysql
+  shell: mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > /home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql
 
-  #tar -cvzf dump20161008.sql.tar.gz dump20161008.sql
+- name: create archive
+  command: chdir=/home/backup/ tar -cvzf Dump_{{ ansible_hostname }}_{{ mydate }}.sql.tar.gz Dump_{{ ansible_hostname }}_{{ mydate }}.sql
 
-  #remember to create and chmod folder /home/backup/ in ansible tower host
+- name: delete SQl dump file
+  file: path=/home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql state=absent
+
 - name: fetching mysql data file to ansible tower host
-  fetch: src=~/backup/dump.sql dest=/home/backup/{{ ansible_hostname }}/ flat=yes
+  fetch: src=/home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql.tar.gz dest={{ sql_fetch_path }} flat=yes
+
+- name: delete tar file
+  file: path=/home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql.tar.gz state=absent

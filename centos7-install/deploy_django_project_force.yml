@@ -21,8 +21,16 @@
     test_apps: SKIP
     collectstatic: False
     mysql_root_password: "dev0000"
+    media_dir_path: /var/www/projectforce/media
+  vars_files:
+    - ansible/vars.yml
 
   tasks:
+    - include: tasks/install_jython.yml
+    - include: tasks/install_phantomjs.yml
+    - include: tasks/install_wkhtmltopdf.yml
+    - include: tasks/link_project.yml
+
     - name: clone repo
       git: repo={{ git_repo_url }}
       sudo: yes
@@ -85,7 +93,7 @@
       when: test_apps != "SKIP"
 
     - name: chmod log dir
-      command: sudo chmod -R 777 /var/www/{{ project_name }}/log
+      file:  /var/www/{{ project_name }}/log state=directory mode=0777
 
     # Config apache
     - name: overide httpd.conf
@@ -97,14 +105,12 @@
       service: name=httpd state=restarted
       sudo: yes
 
-    - name: create static dir
-      command: sudo mkdir /var/www/{{ project_name }}/static
-      args:
-        creates: /var/www/{{ project_name }}/static
+    - name: create media dir
+      file: path={{ media_dir_path }} state=directory mode=0777
       when: collectstatic == True
 
-    - name: chmod static dir
-      command: sudo chmod -R 777 /var/www/{{ project_name }}/static
+    - name: create static dir
+      file: path=/var/www/{{ project_name }}/static state=directory mode=0777
       when: collectstatic == True
 
     - name: django manage.py collectstatic

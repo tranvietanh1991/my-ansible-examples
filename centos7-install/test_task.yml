@@ -2,29 +2,68 @@
 
 - name: test task
   hosts: all
-  serial: 3 #concurent processing nodes
+  vars_files:
+    - ansible/vars.yml
+
+  tasks:
+    - include: tasks/backup_mysql.yml
+#    - include: tasks/install_phantomjs.yml
+#    - include: tasks/install_wkhtmltopdf.yml
+#    - include: tasks/link_project.yml
+
+#    - name: mkdir backup
+#      command:  mkdir ~/backup
+#      args:
+#        creates: ~/backup
+#
+#    - name: chmod backup dir
+#      file: path=~/backup state=directory mode=0777
+#    - name: get_date_time
+#      set_fact: mydate="{{lookup('pipe','date +%Y-%m-%d_%H%M')}}"
+#
+#    - name: dumping mysql
+#      shell: sudo mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > ~/backup/{{ mydate }}.sql
+#
+#    - name: create archive
+#      command: tar -cvzf ~/backup/{{ mydate }}.sql.tar.gz ~/backup/{{ mydate }}.sql
+#      #tar -cvzf dump20161008.sql.tar.gz dump20161008.sql
+#
+#      #remember to create and chmod folder /home/backup/ in ansible tower host
+#    - name: fetching mysql data file to ansible tower host
+#      fetch: src=~/backup/{{ mydate }}.sql.tar.gz dest=/home/cherry/{{ ansible_hostname }}/ flat=yes
+
+#  tasks:
+#    - name: get_date_time
+#      set_fact: mydate="{{lookup('pipe','date +%Y-%m-%d_%H:%M')}}"
+#
+#    - name: hahahaha
+#      shell: echo "{{ mydate }}"
+#      register: hihi
+#
+#    - name: debug hahaha
+#      debug: msg="the echo was {{ hihi.stdout }}"
 
 #sudo ansible-galaxy install franklinkim.docker
 #sudo ansible-galaxy install franklinkim.docker-compose
-  roles:
-    - franklinkim.docker
-    - franklinkim.docker-compose
-
-  vars:
-    mysql_user: root
-    database_name: storagon
-
-  tasks:
-#    - include: tasks/install_docker.yml
-
-#    - name: install docker-compose using pip
-#      pip: name=docker-compose
+#  roles:
+#    - franklinkim.docker
+#    - franklinkim.docker-compose
+#
+#  vars:
+#    mysql_user: root
+#    database_name: storagon
+#
+#  tasks:
+##    - include: tasks/install_docker.yml
+#
+##    - name: install docker-compose using pip
+##      pip: name=docker-compose
+##      sudo: yes
+#
+#    - name: allow docker containers to connect to internet
+#      command: firewall-cmd --permanent --zone=trusted --change-interface=docker0
 #      sudo: yes
-
-    - name: allow docker containers to connect to internet
-      command: firewall-cmd --permanent --zone=trusted --change-interface=docker0
-      sudo: yes
-
-    - name: open port for docker api
-      firewalld: zone=trusted port=4243/tcp permanent=true state=enabled immediate=true
-      sudo: yes
+#
+#    - name: open port for docker api
+#      firewalld: zone=trusted port=4243/tcp permanent=true state=enabled immediate=true
+#      sudo: yes

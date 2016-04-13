@@ -1,7 +1,5 @@
-- name: install wkhtmltopdf
-  hosts: all
-  tasks:
+---
 
-    - name: install wkhtmltopdf via Yum
-      yum: name=wkhtmltopdf state=latest
-      sudo: yes
+- name: install wkhtmltopdf via Yum
+  yum: name=wkhtmltopdf state=latest
+  sudo: yes
