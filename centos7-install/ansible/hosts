@@ -2,8 +2,7 @@
 localhost ansible_connection=local
 
 [workstation]
-192.168.1.98	ansible_connection=ssh	ansible_user=TVA
-192.168.1.99	ansible_connection=ssh	ansible_user=TVA
+192.168.1.155    ansible_connection=ssh  ansible_user=citigo
 
 
 

@@ -1,0 +1,43 @@
+
+- name: create directory and link jython file
+  hosts: all
+
+  tasks:
+    - stat: path=/home/jython-installer-2.7.0.jar
+      register: jython
+
+    - name: download jython
+      get_url:
+        url=https://repo1.maven.org/maven2/org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar
+        dest=/home/
+      when: not jython.stat.exists
+      sudo: yes
+
+    - name: install jdk
+      yum: name=java-1.8.0-openjdk state=latest
+      sudo: yes
+
+    - name: install jython
+      command: java -jar /home/jython-installer-2.7.0.jar -s -d /usr/local/jython/
+      args:
+        creates: /usr/local/jython/
+      sudo: yes
+
+    - name: create symlink Jpython
+      file:
+        src=//usr/local/jython/bin/jython
+        dest=/usr/bin/jython
+        owner=root
+        group=root
+        state=link
+      sudo: yes
+
+    - name: create symlink Jpip
+      file:
+        src=/usr/local/jython/bin/pip
+        dest=/usr/bin/jpip
+        owner=root
+        group=root
+        state=link
+      sudo: yes
+

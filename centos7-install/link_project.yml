@@ -1,0 +1,40 @@
+---
+
+- name: create directory and link jython file
+  hosts: all
+  serial: 3 #concurent processing nodes
+
+  tasks:
+
+    - name: create  jython folder
+      command: mkdir -p /var/www/projectforce/jython/bin/
+      sudo: yes
+
+    - name: create phantomjs folder
+      command: mkdir -p /var/www/projectforce/phantomjs/bin/
+      sudo: yes
+
+    - name: create /opt/wkhtmltox/bin/ folder
+      command: mkdir -p /opt/wkhtmltox/bin/
+      sudo: yes
+
+    - name: link jython to projectforce
+      command:
+        ln -s /usr/local/jython/bin/jython /var/www/projectforce/jython/bin/jython
+      args:
+        creates: /var/www/projectforce/jython/bin/jython
+      sudo: yes
+
+    - name: link phantomjs to projectforce
+      command:
+        ln -s /usr/local/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /var/www/projectforce/phantomjs/bin/phantomjs
+      args:
+        creates: /var/www/projectforce/phantomjs/bin/phantomjs
+      sudo: yes
+
+    - name: link wkhtmltopdf to opt
+      command:
+        ln -s /usr/bin/wkhtmltopdfs /opt/wkhtmltox/bin/wkhtmltopdf
+      args:
+        creates: /opt/wkhtmltox/bin/wkhtmltopdf
+      sudo: yes
