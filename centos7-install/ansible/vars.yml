@@ -4,4 +4,4 @@ jython_download_link: https://repo1.maven.org/maven2/org/python/jython-installer
 mysql_user: root
 mysql_password: dev0108
 database_name: prodbinstance
-sql_fetch_path: /home/cherry/
+sql_fetch_path: /home/

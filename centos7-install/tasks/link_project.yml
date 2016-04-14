@@ -1,11 +1,11 @@
 ---
 
 - name: create  jython folder
-  command: mkdir -p /var/www/projectforce/jython/bin/
+  file: path=/var/www/projectforce/jython/bin/ state=directory
   sudo: yes
 
 - name: create phantomjs folder
-  command: mkdir -p /var/www/projectforce/phantomjs/bin/
+  file: path=/var/www/projectforce/phantomjs/bin/ state=directory
   sudo: yes
 
 - name: link jython to projectforce
@@ -21,7 +21,7 @@
   sudo: yes
 
 - name: create /opt/wkhtmltox/bin/ folder
-  command: mkdir -p /opt/wkhtmltox/bin/
+  file: path=/opt/wkhtmltox/bin/ state=directory
   sudo: yes
 
 - name: link wkhtmltopdf to opt
