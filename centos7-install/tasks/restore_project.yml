@@ -1,0 +1,43 @@
+---
+
+- name: extract extract sql dump from tar file
+  unarchive: src={{ path_sql_tar_file }} dest=/var/www/{{ project_name }} copy=yes
+  args:
+    creates: /var/www/{{ project_name }}/{{ sql_file_name }}
+  sudo: yes
+
+- name: restore data from sql dump file
+  command: chdir=/var/www/{{ project_name }} python manage.py dbshell < {{ sql_file_name }}
+  sudo: yes
+
+- name: remove sql dump file
+  file: path=/var/www/{{ project_name }}/{{sql_file_name}} state=absent
+  sudo: yes
+
+- name: Run migrate to new data
+  django_manage: command=migrate
+  sudo: yes
+
+- name: Retry migrate with --fake-initial
+  django_manage: command="migrate --fake-initial"
+  sudo: yes
+
+- name: Retry migrate with --fake
+  django_manage: command="migrate --fake"
+  sudo: yes
+
+
+
+
+# echo "### Run migrate to new data ###"
+# if python manage.py migrate ; then
+#     exit
+# fi
+
+# echo "\n\n### Retry migrate with --fake-initial ###"
+# if python manage.py migrate --fake-initial ; then
+#     exit
+# fi
+
+# echo "\n\n### Retry migrate with --fake ###"
+# python manage.py migrate --fake
