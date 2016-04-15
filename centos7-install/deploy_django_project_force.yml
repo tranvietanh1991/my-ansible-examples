@@ -75,7 +75,7 @@
         login_password={{mysql_user_password}}
       ignore_errors: yes
 
-    - include: tasks/link_project.yml
+#    - include: tasks/link_project.yml
 
 #    - name: install project dependency native package with yum
 #      yum: name={{ item }}
