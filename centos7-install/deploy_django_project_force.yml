@@ -41,11 +41,11 @@
       when: not jython.stat.exists
       sudo: yes
 
-    - name: fetch repo
-      shell: echo "{{assembla_password}}" | sudo git fetch --all
-      args:
-        chdir: /var/www/{{ project_name }}
-      no_log: True
+#    - name: fetch repo
+#      shell: echo "{{assembla_password}}" | sudo git fetch --all
+#      args:
+#        chdir: /var/www/{{ project_name }}
+#      no_log: True
 
     - name: update repo to specific version in {{ gitrepo_version }}
       command: sudo git reset --hard {{ gitrepo_version }}
