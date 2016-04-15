@@ -32,6 +32,7 @@
     - include: tasks/install_phantomjs.yml
     - include: tasks/install_wkhtmltopdf.yml
     - include: tasks/install_rabbitmq.yml
+    - include: tasks/install_epel_repo.yml
 
     - stat: path=/var/www/{{ project_name }}/.git/
       register: git
@@ -107,14 +108,6 @@
         group=apache
       sudo: yes
 
-    - name: chmod log file
-      file:  
-        path=/var/www/{{ project_name }}/log/projectforce.log 
-        mode=0777 
-        owner=apache 
-        group=apache
-      sudo: yes
-
     # Config apache
     - name: overide httpd.conf
       command: sudo cp -f {{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
@@ -157,3 +150,15 @@
       command: sudo celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
       args:
         chdir: /var/www/{{ project_name }}
+
+    - name: chmod log file
+      file:  
+        path=/var/www/{{ project_name }}/log/projectforce.log 
+        mode=0777 
+        owner=apache 
+        group=apache
+      sudo: yes
+
+    - name: restart httpd service
+      service: name=httpd state=restarted
+      sudo: yes

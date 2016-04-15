@@ -1,13 +1,14 @@
 ---
 
 - name: fetch file from remote host
-  fetch: src=file/epel-release-7-5.noarch.rpm dest=/tmp/
+  copy: src=files/epel-release-7-5.noarch.rpm dest=/tmp/
+  sudo: yes
 
 - name: install epel package
   command: yum install /tmp/epel-release-7-5.noarch.rpm
   sudo: yes
+  ignore_errors: yes
 
 - name: update package
   command: yum update
   sudo: yes
-    
