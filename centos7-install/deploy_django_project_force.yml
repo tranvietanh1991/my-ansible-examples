@@ -1,6 +1,6 @@
 ---
 
-- include: install_LAMPy_stack.yml
+#- include: install_LAMPy_stack.yml
 
 - name: deploy_django_project_force.yml
   hosts: all
@@ -22,7 +22,9 @@
     mysql_username: projectf_dev 
     mysql_user_password: dev0108
     collectstatic: False
+    key_file: "key_file.pem"
     media_dir_path: /var/www/projectforce/media
+
   vars_files:
     - ansible/vars.yml
 
@@ -38,15 +40,13 @@
       register: git
 
     - name: clone repo
-      git: repo={{ git_repo_url }} dest=/var/www/{{ project_name }} clone=yes update=yes
-      when: not jython.stat.exists
+      git: 
+        repo={{ git_repo_url }} 
+        dest=/var/www/{{ project_name }} 
+        clone=yes update=yes
+        key_file=files/
+      when: not git.stat.exists
       sudo: yes
-
-    - name: fetch repo
-      shell: echo "{{assembla_password}}" | sudo git fetch --all
-      args:
-        chdir: /var/www/{{ project_name }}
-      no_log: True
 
     - name: update repo to specific version in {{ gitrepo_version }}
       command: sudo git reset --hard {{ gitrepo_version }}
@@ -79,16 +79,23 @@
     - include: tasks/link_project.yml
 
     - name: install project dependency native package with yum
-      yum: name={{ item }}
+      yum: name=ImageMagick
       sudo: yes
-      with_items:
-        - ImageMagick-devel
 
     - name: install project pip requirements
       pip: requirements={{ pip_requirements }}
       sudo: yes
       args:
         chdir: /var/www/{{ project_name }}
+
+    - name: chmod log dir
+      file:
+        path=/var/www/{{ project_name }}/log
+        state=directory
+        mode=0777
+        owner=apache
+        group=apache
+      sudo: yes
 
     - name: django manage.py migrate
       command: sudo python manage.py migrate
@@ -99,16 +106,6 @@
       django_manage: command=test {{test_apps}} app_path=/var/www/{{ project_name }}
       when: test_apps != "SKIP"
 
-    - name: chmod log dir
-      file: 
-        path=/var/www/{{ project_name }}/log 
-        state=directory 
-        mode=0777 
-        owner=apache 
-        group=apache
-      sudo: yes
-
-    # Config apache
     - name: overide httpd.conf
       command: sudo cp -f {{ project_httpd_conf }} /etc/httpd/conf/httpd.conf
       args:
@@ -145,6 +142,7 @@
 
     - name: remove default admin fixture
       file: path=/var/www/{{ project_name }}/default_admin_user.json state=absent
+      sudo: yes
 
     - name: start celery worker with beat enable
       command: sudo celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;

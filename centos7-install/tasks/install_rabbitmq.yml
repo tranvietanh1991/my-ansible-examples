@@ -12,6 +12,6 @@
   command: firewall-cmd --permanent --add-port=5672/tcp
   sudo: yes
 
-- name: reload firewall service
-  command: firewall-cmd --reload
+- name: start and enable firewalld service
+  service: name=firewalld state=restarted
   sudo: yes
