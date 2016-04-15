@@ -27,8 +27,6 @@
   sudo: yes
 
 
-
-
 # echo "### Run migrate to new data ###"
 # if python manage.py migrate ; then
 #     exit

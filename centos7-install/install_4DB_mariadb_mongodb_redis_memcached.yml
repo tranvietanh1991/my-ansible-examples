@@ -5,6 +5,5 @@
   serial: 3 #concurent processing nodes
 
   tasks:
-    # - include: tasks/install_mariadb_and_python_driver.yml
     # - include: tasks/install_mongodb_and_python_driver.yml
 

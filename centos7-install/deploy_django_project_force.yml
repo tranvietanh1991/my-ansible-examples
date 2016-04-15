@@ -2,7 +2,6 @@
 
 - include: install_LAMPy_stack.yml
 
-
 - name: deploy_django_project_force.yml
   hosts: all
   serial: 5 #concurent processing nodes
@@ -32,7 +31,7 @@
     - include: tasks/install_jython.yml
     - include: tasks/install_phantomjs.yml
     - include: tasks/install_wkhtmltopdf.yml
-    - include: tasks/link_project.yml
+
 
     - name: clone repo
       git: repo={{ git_repo_url }} dest=/var/www/{{ project_name }} clone=yes update=yes
@@ -73,6 +72,8 @@
         login_password={{mysql_user_password}}
       ignore_errors: yes
 
+    - include: tasks/link_project.yml
+
     - name: create log dir
       file: path=/var/www/{{ project_name }}/log state=directory
       sudo: yes
@@ -99,7 +100,20 @@
       when: test_apps != "SKIP"
 
     - name: chmod log dir
-      file:  path=/var/www/{{ project_name }}/log state=directory mode=0777 owner=apache group=apache
+      file: 
+        path=/var/www/{{ project_name }}/log 
+        state=directory 
+        mode=0777 
+        owner=apache 
+        group=apache
+      sudo: yes
+
+    - name: chmod log file
+      file:  
+        path=/var/www/{{ project_name }}/log/projectforce.log 
+        mode=0777 
+        owner=apache 
+        group=apache
       sudo: yes
 
     # Config apache

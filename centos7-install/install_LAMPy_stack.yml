@@ -7,10 +7,10 @@
 
   vars:
     httpd_port: 80
-    mysql_root_password: ""
+    mysql_root_password: "dev0108"
 
   tasks:
-    - include: tasks/install_apache_and_mod_wsgi.yml #httpd_port=80
+    - include: tasks/install_apache_and_mod_wsgi.yml  # httpd_port=80
     - include: tasks/install_mariadb_and_python_driver.yml
     - include: tasks/install_memcached_and_python_driver.yml
 
