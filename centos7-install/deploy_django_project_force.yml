@@ -32,7 +32,6 @@
     - include: tasks/install_phantomjs.yml
     - include: tasks/install_wkhtmltopdf.yml
 
-
     - name: clone repo
       git: repo={{ git_repo_url }} dest=/var/www/{{ project_name }} clone=yes update=yes
       sudo: yes
