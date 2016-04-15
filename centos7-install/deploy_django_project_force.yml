@@ -1,6 +1,6 @@
 ---
 
-- include: install_LAMPy_stack.yml
+#- include: install_LAMPy_stack.yml
 
 - name: deploy_django_project_force.yml
   hosts: all
@@ -98,13 +98,13 @@
         group=apache
       sudo: yes
 
-    - name: chmod log file
-      file:
-        path=/var/www/{{ project_name }}/log/projectforce.log
-        mode=0777
-        owner=apache
-        group=apache
-      sudo: yes
+#    - name: chmod log file
+#      file:
+#        path=/var/www/{{ project_name }}/log/projectforce.log
+#        mode=0777
+#        owner=apache
+#        group=apache
+#      sudo: yes
 
     - name: django manage.py migrate
       command: sudo python manage.py migrate
