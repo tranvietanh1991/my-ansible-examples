@@ -1,7 +1,7 @@
 ---
 
 - name: get and phantomjs file
-  fetch: src=file/phantomjs-2.1.1-linux-x86_64.tar.bz2 dest=/tmp/
+  fetch: src=files/phantomjs-2.1.1-linux-x86_64.tar.bz2 dest=/tmp/
   
 - name: unarchive phantomjs file
   unarchive: src=/tmp/phantomjs-2.1.1-linux-x86_64.tar.bz2 dest=/usr/local/
