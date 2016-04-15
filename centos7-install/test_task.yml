@@ -6,7 +6,7 @@
     - ansible/vars.yml
 
   tasks:
-    - include: tasks/install_phantomjs.yml
+    - include: tasks/install_rabbitmq.yml
 #    - include: tasks/install_phantomjs.yml
 #    - include: tasks/install_wkhtmltopdf.yml
 #    - include: tasks/link_project.yml

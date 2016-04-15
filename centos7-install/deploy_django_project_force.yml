@@ -31,11 +31,15 @@
     - include: tasks/install_jython.yml
     - include: tasks/install_phantomjs.yml
     - include: tasks/install_wkhtmltopdf.yml
+    - include: tasks/install_rabbitmq.yml
+
+    - stat: path=/var/www/{{ project_name }}/.git/
+      register: git
 
     - name: clone repo
       git: repo={{ git_repo_url }} dest=/var/www/{{ project_name }} clone=yes update=yes
+      when: not jython.stat.exists
       sudo: yes
-      # no_log: True
 
     - name: fetch repo
       shell: echo "{{assembla_password}}" | sudo git fetch --all
@@ -72,10 +76,6 @@
       ignore_errors: yes
 
     - include: tasks/link_project.yml
-
-    - name: create log dir
-      file: path=/var/www/{{ project_name }}/log state=directory
-      sudo: yes
 
     - name: install project dependency native package with yum
       yum: name={{ item }}
