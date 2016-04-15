@@ -144,6 +144,7 @@
 
     - name: remove default admin fixture
       file: path=/var/www/{{ project_name }}/default_admin_user.json state=absent
+      sudo: yes
 
     - name: start celery worker with beat enable
       command: sudo celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
