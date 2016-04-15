@@ -77,11 +77,11 @@
 
     - include: tasks/link_project.yml
 
-    - name: install project dependency native package with yum
-      yum: name={{ item }}
-      sudo: yes
-      with_items:
-        - ImageMagick-devel
+#    - name: install project dependency native package with yum
+#      yum: name={{ item }}
+#      sudo: yes
+#      with_items:
+#        - ImageMagick-devel
 
     - name: install project pip requirements
       pip: requirements={{ pip_requirements }}
