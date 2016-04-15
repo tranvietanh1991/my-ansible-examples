@@ -27,11 +27,11 @@
     - ansible/vars.yml
 
   tasks:
-    - include: tasks/install_redis_and_python_driver.yml
-    - include: tasks/install_jython.yml
-    - include: tasks/install_phantomjs.yml
-    - include: tasks/install_wkhtmltopdf.yml
-    - include: tasks/install_rabbitmq.yml
+#    - include: tasks/install_redis_and_python_driver.yml
+#    - include: tasks/install_jython.yml
+#    - include: tasks/install_phantomjs.yml
+#    - include: tasks/install_wkhtmltopdf.yml
+#    - include: tasks/install_rabbitmq.yml
 
     - stat: path=/var/www/{{ project_name }}/.git/
       register: git
