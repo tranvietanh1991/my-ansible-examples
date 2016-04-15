@@ -98,14 +98,6 @@
         group=apache
       sudo: yes
 
-#    - name: chmod log file
-#      file:
-#        path=/var/www/{{ project_name }}/log/projectforce.log
-#        mode=0777
-#        owner=apache
-#        group=apache
-#      sudo: yes
-
     - name: django manage.py migrate
       command: sudo python manage.py migrate
       args:
@@ -157,3 +149,11 @@
       command: sudo celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
       args:
         chdir: /var/www/{{ project_name }}
+
+    - name: chmod log file
+      file:
+        path=/var/www/{{ project_name }}/log/projectforce.log
+        mode=0777
+        owner=apache
+        group=apache
+      sudo: yes
