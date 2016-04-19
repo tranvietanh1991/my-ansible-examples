@@ -35,7 +35,12 @@
       when: project_setting != "settings.py"
 
     - name: create database
-      mysql_db: name={{ database_name }} encoding=utf8 state=present login_user=root login_password={{mysql_root_password}}
+      mysql_db: 
+        name={{ database_name }} 
+        encoding=utf8 
+        state=present 
+        login_user=root 
+        login_password={{mysql_root_password}}
       sudo: yes
       ignore_errors: yes
 
@@ -99,5 +104,8 @@
       sudo: yes
 
     - name: django load superuser (admin/admin)
-      django_manage: command=loaddata app_path=/var/www/{{ project_name }} fixtures=/var/www/{{ project_name }}/default_admin_user.json
+      django_manage: 
+        command=loaddata 
+        app_path=/var/www/{{ project_name }} 
+        fixtures=/var/www/{{ project_name }}/default_admin_user.json
       ignore_errors: yes

@@ -1,15 +1,15 @@
 ---
 
-#- include: install_LAMPy_stack.yml
+- include: update_and_install_pip.yml
+
 
 - name: deploy_django_project_force.yml
   hosts: all
   serial: 5 #concurent processing nodes
 
   vars:
-    git_repo_url: https://hung.ha_citigo:Wanderlust_@git.assembla.com/projectforce.git
+    git_repo_url: git@git.assembla.com:projectforce.git
     gitrepo_version: origin/dev-old-ansible
-    assembla_password: Wanderlust_
     httpd_port: 80
     database_name: prodbinstance
     project_name: projectforce
@@ -22,29 +22,43 @@
     mysql_username: projectf_dev 
     mysql_user_password: dev0108
     collectstatic: False
-    key_file: "key_file.pem"
     media_dir_path: /var/www/projectforce/media
 
   vars_files:
     - ansible/vars.yml
 
   tasks:
+    - include: tasks/install_epel_repo.yml
     - include: tasks/install_redis_and_python_driver.yml
+    - include: tasks/install_mariadb_and_python_driver.yml
     - include: tasks/install_jython.yml
     - include: tasks/install_phantomjs.yml
     - include: tasks/install_wkhtmltopdf.yml
     - include: tasks/install_rabbitmq.yml
-    - include: tasks/install_epel_repo.yml
+    - include: tasks/install_apache_and_mod_wsgi.yml
 
     - stat: path=/var/www/{{ project_name }}/.git/
       register: git
+
+    - name: Create the Github SSH public key file
+      copy: 
+        src="files/id_rsa.pub"
+        dest="~/.ssh/id_rsa.pub"
+        mode=0644
+
+    - name: Create the Github SSH private key file
+      copy: 
+        src="files/id_rsa"
+        dest="~/.ssh/id_rsa"
+        mode=0600
 
     - name: clone repo
       git: 
         repo={{ git_repo_url }} 
         dest=/var/www/{{ project_name }} 
         clone=yes update=yes
-        key_file=files/
+        key_file=files/id_rsa
+        accept_hostkey=yes
       when: not git.stat.exists
       sudo: yes
 

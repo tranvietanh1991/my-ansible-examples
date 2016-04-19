@@ -1,15 +1,20 @@
-[local]
-localhost ansible_connection=local
+#[local]
+#localhost ansible_connection=local
 
-[vm]
-192.168.1.68    ansible_connection=ssh  ansible_user=citigo 
+#[vm]
+#192.168.1.68    ansible_connection=ssh  ansible_user=citigo 
 
-[server]
-192.168.1.155    ansible_connection=ssh  ansible_user=citigo
+#[server]
+#192.168.1.155    ansible_connection=ssh  ansible_user=citigo
 
-[vm:vars]
+[amazone]
+54.218.61.101    ansible_connection=ssh  ansible_user=ec2-user private_key_file=files/AWS-EC-hungkk.pem
+
+#[vm:vars]
+#mysql_root_password=dev0108
+
+[amazone:vars]
 mysql_root_password=dev0108
-
 
 
 

@@ -5,10 +5,10 @@
   sudo: yes
 
 - name: install epel package
-  command: yum install /tmp/epel-release-7-5.noarch.rpm
+  command: yum install /tmp/epel-release-7-5.noarch.rpm -y
   sudo: yes
   ignore_errors: yes
 
 - name: update package
-  command: yum update
+  command: yum update -y
   sudo: yes

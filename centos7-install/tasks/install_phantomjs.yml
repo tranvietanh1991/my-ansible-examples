@@ -1,7 +1,11 @@
 ---
 
+- stat: path=//usr/local/phantomjs-{{ phantomjs_version }}/bin/phantomjs  
+  register: phantomjs
+
 - name: unarchive phantomjs file
   unarchive: src=files/phantomjs-2.1.1-linux-x86_64.tar.bz2 dest=/usr/local/ copy=yes
+  when: not phantomjs.stat.exists
   sudo: yes
 
 - name: create symlink phantomjs
