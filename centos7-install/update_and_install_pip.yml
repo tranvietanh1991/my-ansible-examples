@@ -5,6 +5,7 @@
   serial: 5 #concurent processing nodes
 
   tasks:
+    - include: tasks/install_epel_repo.yml
     - name: install dev lib
       command: sudo yum groupinstall -y development
 
