@@ -21,30 +21,33 @@
     mysql_user_password: dev0108
     collectstatic: False
     media_dir_path: /var/www/projectforce/media
+    path_sql_tar_file: /home/cherry/Documents/prodbinstance17042016.sql.tar.gz
+    sql_file_name: prodbinstance17042016.sql
 
   tasks:
+    - include: tasks/restore_project.yml
       # - include: tasks/install_epel_repo.yml
-      - stat: path=/var/www/{{ project_name }}/.git/
-        register: git
+      # - stat: path=/var/www/{{ project_name }}/.git/
+      #   register: git
 
-      - name: Create the Github SSH public key file
-        copy: 
-          src="files/id_rsa.pub"
-          dest="~/.ssh/id_rsa.pub"
-          mode=0644
+      # - name: Create the Github SSH public key file
+      #   copy: 
+      #     src="files/id_rsa.pub"
+      #     dest="~/.ssh/id_rsa.pub"
+      #     mode=0644
 
-      - name: Create the Github SSH private key file
-        copy: 
-          src="files/id_rsa"
-          dest="~/.ssh/id_rsa"
-          mode=0600
+      # - name: Create the Github SSH private key file
+      #   copy: 
+      #     src="files/id_rsa"
+      #     dest="~/.ssh/id_rsa"
+      #     mode=0600
 
-      - name: clone repo
-        git: 
-          repo={{ git_repo_url }} 
-          dest=/var/www/{{ project_name }} 
-          clone=yes update=yes
-          key_file=files/id_rsa
-          accept_hostkey=yes
-        when: not git.stat.exists
-        sudo: yes
+      # - name: clone repo
+      #   git: 
+      #     repo={{ git_repo_url }} 
+      #     dest=/var/www/{{ project_name }} 
+      #     clone=yes update=yes
+      #     key_file=files/id_rsa
+      #     accept_hostkey=yes
+      #   when: not git.stat.exists
+      #   sudo: yes
