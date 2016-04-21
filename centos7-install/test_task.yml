@@ -4,7 +4,7 @@
   hosts: all
   vars_files:
     - ansible/vars.yml
-
+    
   vars:
     git_repo_url: git@git.assembla.com:projectforce.git
     gitrepo_version: origin/dev-old-ansible
@@ -13,7 +13,7 @@
     project_name: projectforce
     project_config: config_develop.py
     makemigrations_modules: portfolios project
-    pip_requirements: pip_requirements.txt
+    pip_requirements: requirement.txt
     project_httpd_conf: projectforcehq/httpd_develop.conf
     test_apps: SKIP
     mysql_root_password: dev0108
@@ -23,9 +23,15 @@
     media_dir_path: /var/www/projectforce/media
     path_sql_tar_file: /home/cherry/Documents/prodbinstance17042016.sql.tar.gz
     sql_file_name: prodbinstance17042016.sql
+    delete_sql_file: False
+    delete_sql_tar_file: True
+    sync_sql_tar_file: True
 
   tasks:
-    - include: tasks/restore_project.yml
+    # - debug: msg={{ ansible_os_family }}
+    # - debug: msg={{ ansible_distribution }}
+
+    - include: tasks/install_wkhtmltopdf.yml
       # - include: tasks/install_epel_repo.yml
       # - stat: path=/var/www/{{ project_name }}/.git/
       #   register: git

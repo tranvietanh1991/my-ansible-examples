@@ -149,7 +149,7 @@
       sudo: yes
 
     - name: django load superuser (admin/admin)
-      command: sudo python /var/www/{{ project_name }}/manage.py loaddata /var/www/{{ project_name }}/default_admin_user.json
+      command: python /var/www/{{ project_name }}/manage.py loaddata /var/www/{{ project_name }}/default_admin_user.json
       ignore_errors: yes
       sudo: yes
 
@@ -158,9 +158,10 @@
       sudo: yes
 
     - name: start celery worker with beat enable
-      command: sudo celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
+      command: celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
       args:
         chdir: /var/www/{{ project_name }}
+      sudo: yes
 
     - name: chmod log file
       file:  

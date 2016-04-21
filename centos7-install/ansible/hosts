@@ -4,8 +4,8 @@
 #[vm]
 #192.168.1.68    ansible_connection=ssh  ansible_user=citigo 
 
-#[server]
-#192.168.1.155    ansible_connection=ssh  ansible_user=citigo
+[server]
+192.168.1.160    ansible_connection=ssh  ansible_user=citigo
 
 [amazone]
 54.191.6.191    ansible_connection=ssh  ansible_user=ec2-user private_key_file=files/AWS-EC-hungkk.pem

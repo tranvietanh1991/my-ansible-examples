@@ -1,5 +1,14 @@
 ---
 
-- name: install wkhtmltopdf via Yum
-  yum: name=wkhtmltopdf state=latest
+- name: install wkhtmltopdf 
+  unarchive: src=files/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz dest=/opt/ copy=yes
+  sudo: yes
+
+- name: create symlink wkhtmltopdf
+  file:
+    src=/opt/wkhtmltox/bin/wkhtmltopdf
+    dest=/usr/bin/wkhtmltopdf
+    owner=root
+    group=root
+    state=link
   sudo: yes

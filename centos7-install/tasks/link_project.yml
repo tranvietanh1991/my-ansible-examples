@@ -25,16 +25,3 @@
     group=root
     state=link
   sudo: yes
-
-- name: create /opt/wkhtmltox/bin/ folder
-  file: path=/opt/wkhtmltox/bin/ state=directory
-  sudo: yes
-
-- name: link wkhtmltopdf to opt
-  file: 
-    src=/usr/bin/wkhtmltopdf
-    dest=/opt/wkhtmltox/bin/wkhtmltopdf
-    owner=root
-    group=root
-    state=link
-  sudo: yes

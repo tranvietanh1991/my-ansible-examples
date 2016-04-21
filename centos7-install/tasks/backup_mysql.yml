@@ -8,16 +8,19 @@
   set_fact: mydate="{{lookup('pipe','date +%Y-%m-%d_%H%M')}}"
 
 - name: dumping mysql
-  shell: mysqldump --user={{mysql_user}} -p{{mysql_password}} {{database_name}} > /home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql
+  shell: mysqldump --user={{mysql_username}} -p{{mysql_user_password}} {{database_name}} > /home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql
 
 - name: create archive
   command: chdir=/home/backup/ tar -cvzf Dump_{{ ansible_hostname }}_{{ mydate }}.sql.tar.gz Dump_{{ ansible_hostname }}_{{ mydate }}.sql
 
 - name: delete SQl dump file
   file: path=/home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql state=absent
+  when: delete_sql_file
 
 - name: fetching mysql data file to ansible tower host
   fetch: src=/home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql.tar.gz dest={{ sql_fetch_path }} flat=yes
+  when: sync_sql_tar_file
 
 - name: delete tar file
   file: path=/home/backup/Dump_{{ ansible_hostname }}_{{ mydate }}.sql.tar.gz state=absent
+  when: delete_sql_tar_file

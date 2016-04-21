@@ -1,0 +1,147 @@
+---
+
+- name: update projectforce
+  hosts: all
+
+  vars:
+    git_repo_url: git@git.assembla.com:projectforce.git
+    gitrepo_version: origin/dev_old
+    httpd_port: 80
+    database_name: prodbinstance
+    project_name: projectforce
+    project_config: config_develop.py
+    makemigrations_modules: portfolios project
+    pip_requirements: requirement.txt
+    project_httpd_conf: projectforcehq/httpd_develop.conf
+    mysql_root_password: dev0108
+    mysql_username: projectf_dev
+    mysql_user_password: dev0108
+    collectstatic: True
+    media_dir_path: /var/www/{{ project_name }}/media
+    sql_fetch_path: /home/cherry/Downloads/
+    delete_sql_file: False
+    delete_sql_tar_file: True
+    sync_sql_tar_file: True
+
+  tasks:
+    - stat: path=/root/.ssh/ 
+      register: ssh
+
+    # Backup database
+    # - include: tasks/backup_mysql.yml
+
+
+    # Update code
+    - name: create ssh dir if not exit
+      file: path=/root/.ssh/ state=directory mode=0755
+      sudo: yes
+      when: not ssh.stat.exists
+
+    - name: Create the Github SSH public key file
+      copy: 
+        src="files/id_rsa.pub"
+        dest="~/.ssh/id_rsa.pub"
+        mode=0644
+
+    - name: Create the Github SSH private key file
+      copy: 
+        src="files/id_rsa"
+        dest="~/.ssh/id_rsa"
+        mode=0600
+
+    - name: fetch repo 
+      command: sudo git fetch --all
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: update repo to specific version in {{ gitrepo_version }}
+      command: sudo git reset --hard {{ gitrepo_version }}
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: install project pip requirements
+      pip: requirements={{ pip_requirements }}
+      sudo: yes
+      args:
+        chdir: /var/www/{{ project_name }}
+
+    - name: chmod log dir
+      file:
+        path=/var/www/{{ project_name }}/log
+        state=directory
+        mode=0777
+        owner=apache
+        group=apache
+      sudo: yes
+
+    - name: django manage.py makemigrations
+      command: python manage.py makemigrations
+      args:
+        chdir: /var/www/{{ project_name }}
+      ignore_errors: yes
+      sudo: yes
+
+    - name: django manage.py migrate
+      command: python manage.py migrate
+      args:
+        chdir: /var/www/{{ project_name }}
+      sudo: yes
+      ignore_errors: yes
+
+    - name: django manage.py migrate
+      command: python manage.py migrate --fake
+      args:
+        chdir: /var/www/{{ project_name }}
+      sudo: yes
+
+    - name: restart httpd service
+      service: name=httpd state=restarted
+      sudo: yes
+
+    - name: create media dir
+      file: path={{ media_dir_path }} state=directory mode=0777
+      when: collectstatic == True
+      sudo: yes
+
+    - name: create static dir
+      file: path=/var/www/{{ project_name }}/static state=directory mode=0777
+      when: collectstatic == True
+      sudo: yes
+
+    - name: django manage.py collectstatic
+      command: sudo python manage.py collectstatic --noinput -c
+      args:
+        chdir: /var/www/{{ project_name }}
+      when: collectstatic == True
+
+    - name: stop celery worker
+      command: celery multi stop pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
+      args:
+        chdir: /var/www/{{ project_name }}
+      sudo: yes
+
+    - name: start celery worker with beat enable
+      command: celery multi start pfhqworker -A project -B --pidfile="/var/run/celery/%n.pid" --logfile="/var/run/celery/%n.log" --loglevel=INFO;
+      args:
+        chdir: /var/www/{{ project_name }}
+      sudo: yes
+
+    - name: chmod log file
+      file:  
+        path=/var/www/{{ project_name }}/log/projectforce.log 
+        mode=0777 
+        owner=apache 
+        group=apache
+      sudo: yes
+
+    - name: chmod log file
+      file:  
+        path=/var/www/{{ project_name }}/projectforce.log 
+        mode=0777 
+        owner=apache 
+        group=apache
+      sudo: yes
+
+    - name: restart httpd service
+      service: name=httpd state=restarted
+      sudo: yes
